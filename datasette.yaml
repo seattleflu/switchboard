@@ -1,0 +1,33 @@
+---
+title: SCAN Switchboard
+databases:
+  scan-redcap:
+    title: SCAN REDCap
+    description_html: |
+      <p>Summary information aggregated across the language-specific REDCap projects used by SCAN.
+      <p><em>Updated every <mark>X</mark> minutes.</em>
+    queries:
+      lookup-barcode:
+        title: Barcode lookup
+        sql: |
+          select
+            record_link as record,
+            record_arm,
+            pre_scan_barcode,
+            utm_tube_barcode_2,
+            reenter_barcode,
+            return_utm_barcode
+          from
+            record_barcodes
+          where
+            coalesce(:barcode, '') != '' and lower(:barcode) in (
+              pre_scan_barcode,
+              utm_tube_barcode_2,
+              reenter_barcode,
+              return_utm_barcode
+            )
+          order by
+            project_id,
+            record_id
+extra_css_urls:
+  - /static/styles.css

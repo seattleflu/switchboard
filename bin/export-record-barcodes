@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+import json
+from id3c.cli import redcap
+from os import environ
+from typing import NamedTuple
+from urllib.parse import urlencode, urljoin
+
+
+REDCAP_API_URL = environ["REDCAP_API_URL"]
+REDCAP_API_TOKEN = lambda lang: environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")]
+
+BARCODE_FIELDS = [
+    "pre_scan_barcode",
+    "utm_tube_barcode_2",
+    "reenter_barcode",
+    "return_utm_barcode",
+]
+
+FIELDS = [
+    "record_id",
+    "redcap_event_name",
+    *BARCODE_FIELDS,
+]
+
+
+class ScanProject(redcap.Project):
+    lang: str
+
+    def __init__(self, project_id: str, lang: str) -> None:
+        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN(lang), project_id)
+        self.lang = lang
+
+
+def main():
+    projects = [
+        ScanProject(20759, "en"),
+        ScanProject(21520, "es"),
+        ScanProject(21512, "vi"),
+        ScanProject(21514, "zh-Hans"),
+    ]
+
+    for project in projects:
+        event_arm = {
+            event["unique_event_name"]: event["arm_num"]
+                for event in project._fetch("event") }
+
+        for record in project.records(fields = FIELDS, raw = True):
+            query = urlencode({
+                "pid": project.id,
+                "arm": event_arm[record["redcap_event_name"]],
+                "id": record.id,
+            })
+
+            record_url = urljoin(project.base_url, f"redcap_v{project.redcap_version}/DataEntry/record_home.php?{query}")
+
+            data = {
+                "project_id": project.id,
+                "project_lang": project.lang,
+                "record_id": record.id,
+                "record_url": record_url,
+                "record_link": {
+                    "href": record_url,
+                    "label": f"{record.id} ({project.lang})",
+                },
+                "record_arm": record["redcap_event_name"],
+                **{ field: normalize_barcode(record[field]) for field in BARCODE_FIELDS }
+            }
+
+            print(json.dumps(data, indent = None, separators = ",:"), flush = True)
+
+
+def normalize_barcode(barcode):
+    return barcode.lower().strip() or None
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+
+base="$(realpath "$(dirname "$0")/..")"
+
+exec datasette serve \
+     --metadata "$base/datasette.yaml" \
+     --plugins-dir "$base/plugins" \
+     --static static:"$base/static" \
+     "$base/data/scan-redcap.sqlite"

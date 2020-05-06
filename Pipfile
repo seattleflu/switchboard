@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+id3c = {git = "https://github.com/seattleflu/id3c"}
+datasette = ">=0.41"
+sqlite-utils = "*"
+
+[requires]
+python_version = "3.6"

@@ -1,0 +1,24 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SCAN QC</title>
+  <meta name="description" content="SCAN QC">
+  <meta name="author" content="Blab Dev Team">
+
+</head>
+
+<body style="text-align: center;">
+    <h1>
+        SCAN QC
+    </h1>
+    <form action="scan-redcap/lookup-barcode">
+        <label for="barcode">Enter a barcode: </label>
+        <input type="search" id="search" name="barcode" required
+            pattern="[A-Fa-f0-9]{8}">
+        <button>go</button>
+    </form>
+</body>
+</html>

@@ -7,4 +7,5 @@ exec datasette serve \
      --metadata "$base/datasette.yaml" \
      --plugins-dir "$base/plugins" \
      --static static:"$base/static" \
+     --template-dir "$base/templates" \
      "$base/data/scan-redcap.sqlite"

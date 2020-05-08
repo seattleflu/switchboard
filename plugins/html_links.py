@@ -36,7 +36,7 @@ def render_cell(value):
     ):
         return None
 
-    return jinja2.Markup('<a href="{href}">{label}</a>'.format(
+    return jinja2.Markup('<a href="{href}" target="_blank">{label}</a>'.format(
         href = jinja2.escape(data["href"]),
         label = jinja2.escape(data["label"] or "") or "&nbsp;"
     ))

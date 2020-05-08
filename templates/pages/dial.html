@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SCAN Switchboard</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #barcode, button {
+      font-size: 2rem;
+    }
+    #barcode {
+      max-width: 20rem;
+      text-align: center;
+    }
+    .hint {
+      color: gray;
+    }
+    #error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>SCAN Switchboard</h1>
+
+  <p>Operators are standing by!</p>
+
+  <form action="/scan-redcap/lookup-barcode" method="get">
+    <input type="hidden" name="_hide_sql" value="1">
+    <input type="search"
+      id="barcode"
+      name="barcode"
+      required
+      pattern="^[A-Fa-f0-9]{8}$"
+      placeholder="Dial a barcode…"
+      autocomplete="off"
+      autofocus>
+
+    <p class="hint">
+      Barcodes should be 8 characters,<br>
+      made up of only 0–9 and A–F.
+    </p>
+
+    <p id="error"></p>
+  </form>
+
+  <!-- XXX TODO: Would a list of recently opened records be useful? -->
+
+  <script type="text/javascript">
+    const barcode = document.querySelector("#barcode");
+    const formAction = barcode.form.action;
+    const errorDisplay = document.querySelector("#error");
+
+    async function main() {
+      barcode.addEventListener("input", debounce(openRecord, 200));
+
+      barcode.form.addEventListener("submit", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openRecord();
+      });
+    }
+
+    async function openRecord() {
+      clearError();
+      disableForm();
+
+      try {
+        if (!barcode.value.match(barcode.pattern))
+          return;
+
+        await _openRecord(barcode.value);
+        resetForm();
+      }
+      catch (error) {
+        console.error(error);
+        showError(`${error.name}: ${error.message}`);
+      }
+      finally {
+        enableForm();
+      }
+    }
+
+    async function _openRecord(barcodeValue) {
+      const params = new URLSearchParams({
+        barcode: barcodeValue,
+        _shape: "objects",
+      });
+
+      const response = await fetch(`${formAction}.json?${params}`);
+      const result = await response.json();
+      const resultCount = result.rows.length;
+
+      if (resultCount === 0)
+        throw exception("No result rows", result);
+
+      if (resultCount > 1)
+        throw exception("More than one result row", result);
+
+      const recordLink = JSON.parse(result.rows[0].record).href;
+
+      if (!recordLink)
+        throw exception("No link for record", result);
+
+      console.log(`Opening ${recordLink}`);
+      window.open(recordLink);
+    }
+
+    // XXX TODO: This could be more sophisticated, but for now it suffices to
+    // avoid further input while we're looking up a record.
+    function disableForm() {
+      barcode.disabled = true;
+    }
+
+    function enableForm() {
+      barcode.disabled = false;
+    }
+
+    function resetForm() {
+      barcode.form.reset();
+    }
+
+    function exception(message, ...context) {
+      const error = new Error(message);
+      error.context = context;
+      return error;
+    }
+
+    function showError(message) {
+      errorDisplay.innerText = message;
+    }
+
+    function clearError() {
+      errorDisplay.innerText = "";
+    }
+
+    function debounce(f, delay) {
+      let timeout;
+
+      return function() {
+        if (timeout)
+          clearTimeout(timeout);
+
+        timeout = setTimeout(
+          () => {
+            timeout = null;
+
+            // Call original function f(), passing thru the outer
+            // "this" and "arguments".
+            f.apply(this, arguments);
+          },
+          delay
+        );
+      }
+    }
+
+    main().catch(console.error);
+  </script>
+</body>
+</html>

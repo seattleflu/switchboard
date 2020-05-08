@@ -50,6 +50,10 @@
   <!-- XXX TODO: Would a list of recently opened records be useful? -->
 
   <script type="text/javascript">
+    /* XXX: Vanilla JS can take us a long way without complexifying things.  If
+     * we start wanting something with a bit more structure, an in-browser,
+     * no-build-tools setup with Preact + HTM might be nice.
+     */
     const barcode = document.querySelector("#barcode");
     const formAction = barcode.form.action;
     const errorDisplay = document.querySelector("#error");

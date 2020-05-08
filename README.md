@@ -1,16 +1,12 @@
 Exploring the idea of a REDCap record switchboard for the SCAN kit unboxing
 team.
 
-Currently just data aggregation + deep links into REDCap presented in an
-off-the-shelf interface via [Datasette](https://datasette.readthedocs.io).
-
-A custom page providing a streamlined lookup interface is the next step.
-Datasette supports adding [custom
-pages](https://datasette.readthedocs.io/en/stable/custom_templates.html#custom-pages),
-and its JSON web APIs would provide the backend for the frontend code.  The
-custom page could start as a very lightweight HTML form + a sprinkling of
-vanilla JS (or maybe a tiny React-compat library like
-[Preact](https://preactjs.com)).
+Aggregates minimal data from REDCap into a SQLite database.  The SQLite
+database is served by [Datasette](https://datasette.readthedocs.io) to provide
+a lightweight off-the-shelf data browsing and querying interface.  A Datasette
+custom page uses the Datasette JSON web API to provide a "barcode dialer" that
+jumps you to the associated REDCap record, regardless of which SCAN project it
+is in.
 
 
 # Installation
@@ -66,3 +62,5 @@ and then browse the tables and views at <http://localhost:8001>.
 There's a "canned query" for looking up barcodes at
 <http://localhost:8001/scan-redcap/lookup-barcode>.  The corresponding JSON web
 API is <http://localhost:8001/scan-redcap/lookup-barcode.json?barcode=…>.
+
+The "barcode dialer" is at <http://localhost:8001/dial>.

@@ -92,6 +92,7 @@
       const params = new URLSearchParams({
         barcode: barcodeValue,
         _shape: "objects",
+        _hide_sql: 1,
       });
 
       const response = await fetch(`${formAction}.json?${params}`);
@@ -101,8 +102,10 @@
       if (resultCount === 0)
         throw exception("No result rows", result);
 
-      if (resultCount > 1)
-        throw exception("More than one result row", result);
+      if (resultCount > 1) {
+        window.open(`${formAction}?${params}`);
+        return;
+      }
 
       const recordLink = JSON.parse(result.rows[0].record).href;
 

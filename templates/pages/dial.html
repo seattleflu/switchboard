@@ -4,8 +4,21 @@
   <meta charset="utf-8">
   <title>SCAN Switchboard</title>
   <style>
+    /* Copied from Datasette's default styles for body */
     body {
-      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      text-align: left;
+      background-color: #fff;
+    }
+
+    /* Styles for the dialer */
+    main {
       text-align: center;
     }
     #barcode, button {
@@ -21,9 +34,26 @@
     #error {
       color: red;
     }
+
+    /* Copied from Datasette's default styles for .hd */
+    nav {
+        border-bottom: 2px solid #ccc;
+        padding: 0.2em 1em;
+        background-color: #eee;
+        overflow: hidden;
+        box-sizing: border-box;
+        min-height: 2rem;
+    }
+    nav :link {
+        text-decoration: none;
+    }
   </style>
 </head>
 <body>
+<nav>
+  <a href="/">home</a>
+</nav>
+<main>
   <h1>SCAN Switchboard</h1>
 
   <p>Operators are standing by!</p>
@@ -166,5 +196,6 @@
 
     main().catch(console.error);
   </script>
+</main>
 </body>
 </html>

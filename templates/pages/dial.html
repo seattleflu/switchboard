@@ -92,25 +92,28 @@
       const params = new URLSearchParams({
         barcode: barcodeValue,
         _shape: "objects",
+        _hide_sql: 1,
       });
 
       const response = await fetch(`${formAction}.json?${params}`);
       const result = await response.json();
       const resultCount = result.rows.length;
 
-      if (resultCount === 0)
+      if (resultCount === 1) {
+        const recordLink = JSON.parse(result.rows[0].record).href;
+
+        if (!recordLink)
+          throw exception("No link for record", result);
+
+        console.log(`Opening ${recordLink}`);
+        window.open(recordLink);
+      }
+      else if (resultCount > 1) {
+        window.open(`${formAction}?${params}`);
+      }
+      else {
         throw exception("No result rows", result);
-
-      if (resultCount > 1)
-        throw exception("More than one result row", result);
-
-      const recordLink = JSON.parse(result.rows[0].record).href;
-
-      if (!recordLink)
-        throw exception("No link for record", result);
-
-      console.log(`Opening ${recordLink}`);
-      window.open(recordLink);
+      }
     }
 
     // XXX TODO: This could be more sophisticated, but for now it suffices to

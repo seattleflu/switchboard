@@ -13,6 +13,7 @@ databases:
           select
             record_link as record,
             record_arm,
+            back_end_scan_date,
             pre_scan_barcode,
             utm_tube_barcode_2,
             reenter_barcode,

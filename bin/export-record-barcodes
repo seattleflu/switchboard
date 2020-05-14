@@ -19,6 +19,7 @@ BARCODE_FIELDS = [
 FIELDS = [
     "record_id",
     "redcap_event_name",
+    "back_end_scan_date",  # used for record disambiguation
     *BARCODE_FIELDS,
 ]
 
@@ -67,6 +68,7 @@ def main():
                     "label": f"{record.id} ({project.lang})",
                 },
                 "record_arm": record["redcap_event_name"],
+                "back_end_scan_date": record["back_end_scan_date"],
                 **{ field: normalize_barcode(record[field]) for field in BARCODE_FIELDS }
             }
 

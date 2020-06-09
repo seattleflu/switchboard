@@ -5,7 +5,7 @@ databases:
     title: SCAN REDCap
     description_html: |
       <p>Summary information aggregated across the language-specific REDCap projects used by SCAN.
-      <p><em>Updated every <mark>X</mark> minutes.</em>
+      <p><em>Updated every minute.</em>
     queries:
       lookup-barcode:
         title: Barcode lookup

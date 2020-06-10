@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+: "${PORT:=3002}"
+
 base="$(realpath "$(dirname "$0")/..")"
 
 exec datasette serve \
@@ -8,4 +10,5 @@ exec datasette serve \
      --plugins-dir "$base/plugins" \
      --static static:"$base/static" \
      --template-dir "$base/templates" \
+     --port "$PORT" \
      "$base/data/scan-redcap.sqlite"

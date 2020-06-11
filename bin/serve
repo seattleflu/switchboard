@@ -11,4 +11,5 @@ exec datasette serve \
      --static static:"$base/static" \
      --template-dir "$base/templates" \
      --port "$PORT" \
-     "$base/data/scan-redcap.sqlite"
+     "$base/data/scan-redcap.sqlite" \
+     "$@"

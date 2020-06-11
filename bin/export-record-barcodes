@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 import json
+from concurrent.futures import ThreadPoolExecutor
 from id3c.cli import redcap
 from os import environ
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 from urllib.parse import urlencode, urljoin
 
 
 REDCAP_API_URL = environ["REDCAP_API_URL"]
-REDCAP_API_TOKEN = lambda lang: environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")]
+REDCAP_API_TOKEN = lambda lang, purview: \
+    environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")] if purview == "ph" else \
+    environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper(), lang.upper().replace("-", "_"))]
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
@@ -26,53 +29,72 @@ FIELDS = [
 
 class ScanProject(redcap.Project):
     lang: str
+    purview: Optional[str]
 
-    def __init__(self, project_id: str, lang: str) -> None:
-        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN(lang), project_id)
+    def __init__(self, project_id: str, lang: str, purview: str = None) -> None:
+        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN(lang, purview), project_id)
         self.lang = lang
+        self.purview = purview
 
 
 def main():
     projects = [
-        ScanProject(20759, "en"),
-        ScanProject(21520, "es"),
-        ScanProject(21512, "vi"),
-        ScanProject(21514, "zh-Hans"),
-        ScanProject(21521, "zh-Hant"),
-        ScanProject(21809, "so"),
-        ScanProject(21810, "ko"),
-        ScanProject(21808, "ru"),
+        # SCAN (public health action)
+        ScanProject(20759, "en", "ph"),
+        ScanProject(21520, "es", "ph"),
+        ScanProject(21521, "zh-Hant", "ph"),
+
+        # SCAN (research study)
+        ScanProject(22461, "en", "irb"),
+        ScanProject(22467, "tl", "irb"),
+        ScanProject(22468, "ti", "irb"),
+        ScanProject(22469, "ur", "irb"),
+        ScanProject(22470, "am", "irb"),
+        ScanProject(22471, "so", "irb"),
+        ScanProject(22472, "ru", "irb"),
+        ScanProject(22473, "zh-Hans", "irb"),
+        ScanProject(22474, "zh-Hant", "irb"),
+        ScanProject(22475, "es", "irb"),
+        ScanProject(22476, "ko", "irb"),
+        ScanProject(22477, "vi", "irb"),
     ]
 
-    for project in projects:
-        event_arm = {
-            event["unique_event_name"]: event["arm_num"]
-                for event in project._fetch("event") }
+    with ThreadPoolExecutor(15) as pool:
+        for project_records in pool.map(lambda p: list(fetch_records(p)), projects):
+            for record in project_records:
+                print(json.dumps(record, indent = None, separators = ",:"), flush = True)
 
-        for record in project.records(fields = FIELDS, raw = True):
-            query = urlencode({
-                "pid": project.id,
-                "arm": event_arm[record["redcap_event_name"]],
-                "id": record.id,
-            })
 
-            record_url = urljoin(project.base_url, f"redcap_v{project.redcap_version}/DataEntry/record_home.php?{query}")
+def fetch_records(project):
+    event_arm = {
+        event["unique_event_name"]: event["arm_num"]
+            for event in project._fetch("event") }
 
-            data = {
-                "project_id": project.id,
-                "project_lang": project.lang,
-                "record_id": record.id,
-                "record_url": record_url,
-                "record_link": {
-                    "href": record_url,
-                    "label": f"{record.id} ({project.lang})",
-                },
-                "record_arm": record["redcap_event_name"],
-                "back_end_scan_date": record["back_end_scan_date"],
-                **{ field: normalize_barcode(record[field]) for field in BARCODE_FIELDS }
-            }
+    for record in project.records(fields = FIELDS, raw = True):
+        query = urlencode({
+            "pid": project.id,
+            "arm": event_arm[record["redcap_event_name"]],
+            "id": record.id,
+        })
 
-            print(json.dumps(data, indent = None, separators = ",:"), flush = True)
+        record_url = urljoin(project.base_url, f"redcap_v{project.redcap_version}/DataEntry/record_home.php?{query}")
+
+        data = {
+            "project_id": project.id,
+            "project_lang": project.lang,
+            "project_purview": project.purview,
+            "record_id": record.id,
+            "record_url": record_url,
+            "record_link": {
+                "href": record_url,
+                "label": f"{record.id} ({project.lang})",
+            },
+            "record_arm": record["redcap_event_name"],
+            "back_end_scan_date": record["back_end_scan_date"],
+            **{ field: normalize_barcode(record[field]) for field in BARCODE_FIELDS }
+        }
+
+        yield data
 
 
 def normalize_barcode(barcode):

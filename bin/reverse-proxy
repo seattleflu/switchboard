@@ -1,0 +1,14 @@
+#!/usr/bin/env plackup
+#
+# A barebones reverse proxy for local testing of fix-links.js.  Note that
+# you'll have to adjust production_base_url there.
+#
+use strict;
+use warnings;
+use Plack::Builder;
+use Plack::App::Proxy;
+ 
+builder {
+    mount "/switchboard" =>
+        Plack::App::Proxy->new(remote => "http://127.0.0.1:3002")->to_app;
+};

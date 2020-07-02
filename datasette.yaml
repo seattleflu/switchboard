@@ -32,3 +32,4 @@ databases:
             record_id
 extra_css_urls:
   - /static/styles.css
+  - /switchboard/static/styles.css

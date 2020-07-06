@@ -32,3 +32,7 @@ databases:
             record_id
 extra_css_urls:
   - /static/styles.css
+  - /switchboard/static/styles.css
+extra_js_urls:
+  - /static/fix-links.js
+  - /switchboard/static/fix-links.js

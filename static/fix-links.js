@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.debug(`fix-links: fixing ${anchor.href}`);
 
       anchor.protocol = production_base_url.protocol;
-      anchor.host     = production_base_url.host;
+      anchor.hostname = production_base_url.hostname;
+      anchor.port     = production_base_url.port;
       anchor.pathname = production_base_url.pathname + anchor.pathname;
 
       console.debug(`fix-links: fixed ${anchor.href}`);

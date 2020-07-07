@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+
+base="$(dirname "$0")/.."
+
+main() {
+    local records="$1"
+    local database="$2"
+    local table=record_barcodes
+
+    # XXX TODO: This whole block could be a new --truncate option to
+    # `sqlite-utils insert` once that's available.  That'd be nicer because
+    # it'd group the delete and insert into the same transaction, leaving no
+    # room for an empty table after a successful delete but failed insert.
+    #   -trs, 7 July 2020
+    if [[ -e "$database" ]]; then
+        # sqlite3 appears to exits non-zero on a SQL error only when the SQL
+        # statement is given as an argument; when reading from stdin it always
+        # seems to exit 0.
+        sqlite3 "$database" "delete from $table"
+    fi
+
+    sqlite-utils insert --nl "$database" "$table" "$records"
+    sqlite3 "$database" < "$base/derived-tables.sql"
+}
+
+main "$@"

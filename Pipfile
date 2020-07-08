@@ -8,7 +8,7 @@ verify_ssl = true
 [packages]
 id3c = {git = "https://github.com/seattleflu/id3c"}
 datasette = ">=0.41"
-sqlite-utils = "*"
+sqlite-utils = ">=2.11"
 
 [requires]
 python_version = "3.6"

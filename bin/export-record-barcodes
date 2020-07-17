@@ -10,7 +10,7 @@ from urllib.parse import urlencode, urljoin
 REDCAP_API_URL = environ["REDCAP_API_URL"]
 REDCAP_API_TOKEN = lambda lang, purview: \
     environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")] if purview == "ph" else \
-    environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper(), lang.upper().replace("-", "_"))]
+    environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper().replace("-", "_")), lang.upper().replace("-", "_"))]
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",

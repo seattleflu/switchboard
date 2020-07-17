@@ -57,6 +57,7 @@ def main():
         ScanProject(22475, "es", "irb"),
         ScanProject(22476, "ko", "irb"),
         ScanProject(22477, "vi", "irb"),
+        ScanProject(23089, "en", "irb-kiosk"),
     ]
 
     with ThreadPoolExecutor(15) as pool:

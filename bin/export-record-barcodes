@@ -104,6 +104,9 @@ def fetch_records(project):
 
 
 def normalize_barcode(barcode):
+    if not barcode:
+        return None
+
     return barcode.lower().strip() or None
 
 

@@ -10,7 +10,7 @@ from urllib.parse import urlencode, urljoin
 REDCAP_API_URL = environ["REDCAP_API_URL"]
 REDCAP_API_TOKEN = lambda lang, purview: \
     environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")] if purview == "ph" else \
-    environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper().replace("-", "_")), lang.upper().replace("-", "_"))]
+    environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper().replace("-", "_"), lang.upper().replace("-", "_"))]
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
@@ -92,7 +92,12 @@ def fetch_records(project):
             },
             "record_arm": record["redcap_event_name"],
             "back_end_scan_date": record.get("back_end_scan_date"),
-            **{ field: normalize_barcode(record[field]) for field in BARCODE_FIELDS }
+
+            # The barcode fields were made optional for the SCAN IRB Kiosk project
+            # which is not a clone of the SCAN IRB project. We should re-examine this
+            # if it changes the philosophy that was inteded for these fields.
+            # jccraft 07/17/2020
+            **{ field: normalize_barcode(record.get(field)) for field in BARCODE_FIELDS }
         }
 
         yield data

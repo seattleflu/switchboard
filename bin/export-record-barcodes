@@ -60,7 +60,7 @@ def main():
         ScanProject(23089, "en", "irb-kiosk"),
     ]
 
-    with ThreadPoolExecutor(15) as pool:
+    with ThreadPoolExecutor(8) as pool:
         for project_records in pool.map(lambda p: list(fetch_records(p)), projects):
             for record in project_records:
                 print(json.dumps(record, indent = None, separators = ",:"), flush = True)

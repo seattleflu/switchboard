@@ -44,11 +44,11 @@ credentials:
     REDCAP_API_TOKEN_EN
     REDCAP_API_TOKEN_ES
     REDCAP_API_TOKEN_VI
-    REDCAP_API_TOKEN_ZH_HANS
+    REDCAP_API_TOKEN_ZH_HANT
+    REDCAP_API_TOKEN_UW_REOPENING
     …
 
-These are the same variables used in the [backoffice/id3c-production/env.d/redcap-scan/](https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap-scan/)
-envdir.
+These are the same variables used in the [backoffice/id3c-production/env.d/redcap-scan/] and [backoffice/id3c-production/env.d/redcap-sfs] envdirs.
 
 
 # Serving the data
@@ -74,3 +74,7 @@ On MacOS, if you see this error message:
 You can install realpath as part of coreutils, using Homebrew:
 
     brew install coreutils
+
+
+[backoffice/id3c-production/env.d/redcap-scan/]: https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap-scan/
+[backoffice/id3c-production/env.d/redcap-sfs]: https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap-sfs

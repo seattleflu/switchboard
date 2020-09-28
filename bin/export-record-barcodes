@@ -8,15 +8,18 @@ from urllib.parse import urlencode, urljoin
 
 
 REDCAP_API_URL = environ["REDCAP_API_URL"]
-REDCAP_API_TOKEN = lambda lang, purview: \
+REDCAP_API_TOKEN_SCAN = lambda lang, purview: \
     environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")] if purview == "ph" else \
     environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper().replace("-", "_"), lang.upper().replace("-", "_"))]
+REDCAP_API_TOKEN_UW_REOPENING = environ["REDCAP_API_TOKEN_UW_REOPENING"]
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
     "utm_tube_barcode_2",
     "reenter_barcode",
     "return_utm_barcode",
+    "collect_barcode_kiosk",
+    "barcode_swabsend",
 ]
 
 FIELDS = [
@@ -27,12 +30,19 @@ FIELDS = [
 ]
 
 
+class HuskyProject(redcap.Project):
+    def __init__(self, project_id: str) -> None:
+        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_UW_REOPENING, project_id)
+        self.lang = 'en'
+        self.purview = 'irb'
+
+
 class ScanProject(redcap.Project):
     lang: str
     purview: Optional[str]
 
     def __init__(self, project_id: str, lang: str, purview: str = None) -> None:
-        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN(lang, purview), project_id)
+        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_SCAN(lang, purview), project_id)
         self.lang = lang
         self.purview = purview
 
@@ -58,6 +68,9 @@ def main():
         ScanProject(22476, "ko", "irb"),
         ScanProject(22477, "vi", "irb"),
         ScanProject(23089, "en", "irb-kiosk"),
+
+        # UW Reopening Testing
+        HuskyProject(23854)
     ]
 
     with ThreadPoolExecutor(1) as pool:
@@ -71,7 +84,8 @@ def fetch_records(project):
         event["unique_event_name"]: event["arm_num"]
             for event in project._fetch("event") }
 
-    for record in project.records(fields = FIELDS, raw = True):
+    for record in project.records(fields=FIELDS, raw=True):
+
         query = urlencode({
             "pid": project.id,
             "arm": event_arm[record["redcap_event_name"]],

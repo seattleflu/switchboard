@@ -19,9 +19,11 @@ create table duplicate_record_ids as
         pre_scan_barcode,
         utm_tube_barcode_2,
         reenter_barcode,
-        return_utm_barcode
+        return_utm_barcode,
+        collect_barcode_kiosk,
+        barcode_swabsend
     from
         record_barcodes
-    where 
+    where
         (project_id, record_id) in (select project_id, record_id from duplicates)
 ;

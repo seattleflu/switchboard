@@ -64,3 +64,13 @@ There's a "canned query" for looking up barcodes at
 API is <http://localhost:8001/scan-redcap/lookup-barcode.json?barcode=…>.
 
 The "barcode dialer" is at <http://localhost:8001/dial>.
+
+## Troubleshooting
+
+On MacOS, if you see this error message:
+
+    ./bin/serve: line 6: realpath: command not found
+
+You can install realpath as part of coreutils, using Homebrew:
+
+    brew install coreutils

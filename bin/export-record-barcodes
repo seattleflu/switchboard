@@ -3,7 +3,7 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 from id3c.cli import redcap
 from os import environ
-from typing import NamedTuple, Optional
+from typing import Optional
 from urllib.parse import urlencode, urljoin
 
 

@@ -41,7 +41,7 @@ class ScanProject(redcap.Project):
     lang: str
     purview: Optional[str]
 
-    def __init__(self, project_id: str, lang: str, purview: str = None) -> None:
+    def __init__(self, project_id: int, lang: str, purview: str) -> None:
         super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_SCAN(lang, purview), project_id)
         self.lang = lang
         self.purview = purview

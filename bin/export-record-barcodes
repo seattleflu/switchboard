@@ -3,7 +3,7 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 from id3c.cli import redcap
 from os import environ
-from typing import Optional
+from typing import Optional, Dict
 from urllib.parse import urlencode, urljoin
 
 
@@ -26,6 +26,8 @@ FIELDS = [
     "record_id",
     "redcap_event_name",
     "back_end_scan_date",  # used for record disambiguation
+    "redcap_repeat_instance",
+    "post_collection_data_entry_qc_complete",  # used to see if we can deep link to the PCDEQC form
     *BARCODE_FIELDS,
 ]
 
@@ -35,39 +37,137 @@ class HuskyProject(redcap.Project):
         super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_UW_REOPENING, project_id)
         self.lang = 'en'
         self.purview = 'irb'
+        # There is currently only one arm but with two events for this project:
+        # Enrollment and Encounter events. None of the Enrollment event
+        # isntruments have any barcode fields, so include only the Encounter
+        # event_id.
+        #
+        # -kfay, 30 Sep 2020
+        self.event_id_map = {1: 742155}
 
 
 class ScanProject(redcap.Project):
     lang: str
     purview: Optional[str]
 
-    def __init__(self, project_id: int, lang: str, purview: str) -> None:
+    def __init__(self,
+        project_id: int,
+        lang: str,
+        purview: str,
+        event_id_map: Dict[int, int]) -> None:
+        """
+        Creates a SCAN Project object given the REDCap project PID *project_id*,
+        an ISO language code *lang*, a study *purview* (either IRB or Public
+        Health), and a REDCap project *event_id_map* that contains a map of a
+        project's arm number to the associated `event_id` in REDCap.
+        """
         super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_SCAN(lang, purview), project_id)
         self.lang = lang
         self.purview = purview
-
+        self.event_id_map = event_id_map
 
 def main():
+    # Unfortunately, the REDCap API does not expose the event_id attribute which
+    # is required to generate deep links into a specific "page" in a REDCap
+    # project. The event_id changes per project arm, so hard code the
+    # relationship between arm # and event_id for each REDCap project.
     projects = [
         # SCAN (public health action)
-        ScanProject(20759, "en", "ph"),
-        ScanProject(21520, "es", "ph"),
-        ScanProject(21521, "zh-Hant", "ph"),
+        ScanProject(20759, "en", "ph", {
+            1: 732107,
+            2: 732126,
+            3: 732127,
+        }),
+        ScanProject(21520, "es", "ph", {
+            1: 735113,
+            2: 735114,
+            3: 735115,
+        }),
+        ScanProject(21521, "zh-Hant", "ph", {
+            1: 735116,
+            2: 735117,
+            3: 735118,
+        }),
 
         # SCAN (research study)
-        ScanProject(22461, "en", "irb"),
-        ScanProject(22467, "tl", "irb"),
-        ScanProject(22468, "ti", "irb"),
-        ScanProject(22469, "ur", "irb"),
-        ScanProject(22470, "am", "irb"),
-        ScanProject(22471, "so", "irb"),
-        ScanProject(22472, "ru", "irb"),
-        ScanProject(22473, "zh-Hans", "irb"),
-        ScanProject(22474, "zh-Hant", "irb"),
-        ScanProject(22475, "es", "irb"),
-        ScanProject(22476, "ko", "irb"),
-        ScanProject(22477, "vi", "irb"),
-        ScanProject(23089, "en", "irb-kiosk"),
+        ScanProject(22467, "tl", "irb", {
+            1: 737713,
+            2: 737714,
+            3: 737715,
+            4: 737755,
+        }),
+        ScanProject(22468, "ti", "irb", {
+            1: 737716,
+            2: 737717,
+            3: 737718,
+            4: 737756,
+        }),
+        ScanProject(22469, "ur", "irb", {
+            1: 737719,
+            2: 737720,
+            3: 737721,
+            4: 737757,
+        }),
+        ScanProject(22470, "am", "irb", {
+            1: 737722,
+            2: 737723,
+            3: 737724,
+            4: 737758,
+        }),
+        ScanProject(22471, "so", "irb", {
+            1: 737725,
+            2: 737726,
+            3: 737727,
+            4: 737759,
+        }),
+        ScanProject(22461, "en", "irb", {
+            1: 737705,
+            2: 737706,
+            3: 737707,
+            4: 737754
+        }),
+        ScanProject(22472, "ru", "irb", {
+            1: 737728,
+            2: 737729,
+            3: 737730,
+            4: 737760,
+        }),
+        ScanProject(22473, "zh-Hans", "irb", {
+            1: 737731,
+            2: 737732,
+            3: 737733,
+            4: 737761,
+        }),
+        ScanProject(22474, "zh-Hant", "irb", {
+            1: 737734,
+            2: 737735,
+            3: 737736,
+            4: 737762,
+        }),
+        ScanProject(22475, "es", "irb", {
+            1: 737737,
+            2: 737738,
+            3: 737739,
+            4: 737763,
+        }),
+        ScanProject(22476, "ko", "irb", {
+            1: 737740,
+            2: 737741,
+            3: 737742,
+            4: 737764,
+        }),
+        ScanProject(22477, "vi", "irb", {
+            1: 737743,
+            2: 737744,
+            3: 737745,
+            4: 737765,
+        }),
+        ScanProject(23089, "en", "irb-kiosk", {
+            1: 739632,
+            2: 739633,
+            3: 739634,
+            4: 739635,
+        }),
 
         # We're skipping REDCap PID 23959 (SCAN: Husky Test), because this
         # was a one-off project that only had enrollments for a couple of weeks
@@ -89,14 +189,39 @@ def fetch_records(project):
             for event in project._fetch("event") }
 
     for record in project.records(fields=FIELDS, raw=True):
+        arm = event_arm[record["redcap_event_name"]]
 
-        query = urlencode({
+        query_params = {
             "pid": project.id,
-            "arm": event_arm[record["redcap_event_name"]],
+            "arm": arm,
             "id": record.id,
-        })
+        }
 
-        record_url = urljoin(project.base_url, f"redcap_v{project.redcap_version}/DataEntry/record_home.php?{query}")
+        # The PCDEQC form is only for swab-and-send kits. Only deep link to the
+        # PCDEQC form if it exists and if the swab was not collected in-person
+        # at a kiosk. All of the SCAN PH and SCAN IRB projects are swab-and-send
+        # except for the SCAN In-person enrollments project which does not have
+        # the PCDEQC form. Therefore, we only need to check the UW Reopening
+        # (i.e. Husky Coronavirus Testing) REDCap project to determine if the
+        # barcode is a kiosk barcode.
+        if 'post_collection_data_entry_qc_complete' in record \
+            and not record.get('collect_barcode_kiosk'):
+            query_params['page'] = 'post_collection_data_entry_qc'
+            query_params['event_id'] = project.event_id_map[arm]
+            redcap_endpoint = 'index'
+            # Instance is only needed for deep linking to a specific form, so
+            # don't bother including it in the query if we're directing users
+            # to the record home page.
+            instance = record.get('redcap_repeat_instance')
+            if instance:
+                query_params['instance'] = instance
+        else:
+            redcap_endpoint = 'record_home'
+
+        query = urlencode(query_params)
+
+        record_url = urljoin(project.base_url,
+            f"redcap_v{project.redcap_version}/DataEntry/{redcap_endpoint}.php?{query}")
 
         data = {
             "project_id": project.id,

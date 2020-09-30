@@ -69,6 +69,10 @@ def main():
         ScanProject(22477, "vi", "irb"),
         ScanProject(23089, "en", "irb-kiosk"),
 
+        # We're skipping REDCap PID 23959 (SCAN: Husky Test), because this
+        # was a one-off project that only had enrollments for a couple of weeks
+        # before the UW Reopening study launched.
+
         # UW Reopening Testing
         HuskyProject(23854)
     ]

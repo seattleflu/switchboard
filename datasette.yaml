@@ -12,7 +12,7 @@ databases:
         sql: |
           select
             record_link as record,
-            record_arm,
+            event_name,
             back_end_scan_date,
             pre_scan_barcode,
             utm_tube_barcode_2,

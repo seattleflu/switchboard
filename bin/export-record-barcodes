@@ -247,12 +247,13 @@ def fetch_records(project):
             "project_lang": project.lang,
             "project_purview": project.purview,
             "record_id": record.id,
+            "repeat_instance": record.get("redcap_repeat_instance"),  # Used in duplicate disambiguation
             "record_url": record_url,
             "record_link": {
                 "href": record_url,
                 "label": f"{record.id} ({project.lang})",
             },
-            "record_arm": record["redcap_event_name"],
+            "event_name": event_name,
             "back_end_scan_date": record.get("back_end_scan_date"),
 
             # The barcode fields were made optional for the SCAN IRB Kiosk project

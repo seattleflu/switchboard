@@ -10,12 +10,14 @@ create table duplicate_record_ids as
             record_barcodes
         group by
             project_id,
-            record_id
+            record_id,
+            event_name,
+            repeat_instance
         having count(*) > 1
     )
     select
         record_link as record,
-        record_arm,
+        event_name,
         pre_scan_barcode,
         utm_tube_barcode_2,
         reenter_barcode,

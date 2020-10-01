@@ -69,8 +69,9 @@ class ScanProject(redcap.Project):
 def main():
     # Unfortunately, the REDCap API does not expose the event_id attribute which
     # is required to generate deep links into a specific "page" in a REDCap
-    # project. The event_id changes per project arm, so hard code the
-    # relationship between arm # and event_id for each REDCap project.
+    # project. The event_id changes per project event, so hard code the
+    # relationship between unique event name and event_id for each REDCap
+    # project.
     projects = [
         # SCAN (public health action)
         ScanProject(20759, "en", "ph", {
@@ -197,15 +198,12 @@ def fetch_records(project):
             "id": record.id,
         }
 
-        # The PCDEQC form is only for swab-and-send kits. Only deep link to the
-        # PCDEQC form if it exists and if the swab was not collected in-person
-        # at a kiosk. All of the SCAN PH and SCAN IRB projects are swab-and-send
-        # except for the SCAN In-person enrollments project which does not have
-        # the PCDEQC form. Therefore, we only need to check the UW Reopening
-        # (i.e. Husky Coronavirus Testing) REDCap project to determine if the
-        # barcode is a kiosk barcode.
-        if 'post_collection_data_entry_qc_complete' in record \
-            and not record.get('collect_barcode_kiosk'):
+        # Only deep link to the PCDEQC form if it exists
+        # ([post_collection_data_entry_qc_complete] != ""). Otherwise, link to
+        # the record home page.
+        if record['post_collection_data_entry_qc_complete'] == "":
+            redcap_endpoint = 'record_home'
+        else:
             query_params['page'] = 'post_collection_data_entry_qc'
             query_params['event_id'] = project.event_id_map[arm]
             redcap_endpoint = 'index'
@@ -215,8 +213,6 @@ def fetch_records(project):
             instance = record.get('redcap_repeat_instance')
             if instance:
                 query_params['instance'] = instance
-        else:
-            redcap_endpoint = 'record_home'
 
         query = urlencode(query_params)
 

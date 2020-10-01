@@ -5,7 +5,7 @@ databases:
     title: SFS REDCap
     description_html: |
       <p>Summary information aggregated across the language-specific REDCap projects used by SFS.
-      <p><em>Updated every minute.</em>
+      <p><em>Updated every 5 minutes.</em>
     queries:
       lookup-barcode:
         title: Barcode lookup

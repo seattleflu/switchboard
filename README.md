@@ -1,11 +1,11 @@
-Exploring the idea of a REDCap record switchboard for the SCAN kit unboxing
+Exploring the idea of a REDCap record switchboard for the SFS kit unboxing
 team.
 
 Aggregates minimal data from REDCap into a SQLite database.  The SQLite
 database is served by [Datasette](https://datasette.readthedocs.io) to provide
 a lightweight off-the-shelf data browsing and querying interface.  A Datasette
 custom page uses the Datasette JSON web API to provide a "barcode dialer" that
-jumps you to the associated REDCap record, regardless of which SCAN project it
+jumps you to the associated REDCap record, regardless of which SFS project it
 is in.
 
 
@@ -28,7 +28,7 @@ and the SQLite CLI with:
 
 # Building the data
 
-You can build the _data/scan-redcap.sqlite_ database with:
+You can build the _data/sfs-redcap.sqlite_ database with:
 
     pipenv run make
 
@@ -60,8 +60,8 @@ You can serve the database with Datasette with:
 and then browse the tables and views at <http://localhost:8001>.
 
 There's a "canned query" for looking up barcodes at
-<http://localhost:8001/scan-redcap/lookup-barcode>.  The corresponding JSON web
-API is <http://localhost:8001/scan-redcap/lookup-barcode.json?barcode=…>.
+<http://localhost:8001/sfs-redcap/lookup-barcode>.  The corresponding JSON web
+API is <http://localhost:8001/sfs-redcap/lookup-barcode.json?barcode=…>.
 
 The "barcode dialer" is at <http://localhost:8001/dial>.
 

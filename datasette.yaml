@@ -1,10 +1,10 @@
 ---
-title: SCAN Switchboard
+title: SFS Switchboard
 databases:
-  scan-redcap:
-    title: SCAN REDCap
+  sfs-redcap:
+    title: SFS REDCap
     description_html: |
-      <p>Summary information aggregated across the language-specific REDCap projects used by SCAN.
+      <p>Summary information aggregated across the language-specific REDCap projects used by SFS.
       <p><em>Updated every minute.</em>
     queries:
       lookup-barcode:

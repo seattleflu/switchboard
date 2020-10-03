@@ -1,10 +1,27 @@
 #!/usr/bin/env python3
+import os
 import json
+import logging
+from sys import stderr
 from concurrent.futures import ThreadPoolExecutor
 from id3c.cli import redcap
 from os import environ
-from typing import NamedTuple, Optional
+from typing import Optional, Dict
 from urllib.parse import urlencode, urljoin
+
+
+LOG_LEVEL = os.environ.get("LOG_LEVEL", "debug").upper()
+
+logging.basicConfig(
+    level = logging.ERROR,
+    format = "[%(asctime)s] %(levelname)-8s %(message)s",
+    datefmt = "%Y-%m-%d %H:%M:%S%z",
+    stream = stderr)
+
+logging.captureWarnings(True)
+
+log = logging.getLogger(__name__)
+log.setLevel(LOG_LEVEL)
 
 
 REDCAP_API_URL = environ["REDCAP_API_URL"]
@@ -26,6 +43,8 @@ FIELDS = [
     "record_id",
     "redcap_event_name",
     "back_end_scan_date",  # used for record disambiguation
+    "redcap_repeat_instance",
+    "post_collection_data_entry_qc_complete",  # used to see if we can deep link to the PCDEQC form
     *BARCODE_FIELDS,
 ]
 
@@ -35,39 +54,145 @@ class HuskyProject(redcap.Project):
         super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_UW_REOPENING, project_id)
         self.lang = 'en'
         self.purview = 'irb'
+        # There are currently two events for this project: Enrollment and
+        # Encounter events, both part of arm 1. None of the Enrollment event
+        # isntruments have any barcode fields, so include only the Encounter
+        # event_id.
+        #
+        # -kfay, 30 Sep 2020
+        self.event_id_map = {'encounter_arm_1': 742155}
 
 
 class ScanProject(redcap.Project):
     lang: str
     purview: Optional[str]
 
-    def __init__(self, project_id: str, lang: str, purview: str = None) -> None:
+    def __init__(self,
+        project_id: int,
+        lang: str,
+        purview: str,
+        event_id_map: Dict[int, int]) -> None:
+        """
+        Creates a SCAN Project object given the REDCap project PID *project_id*,
+        an ISO language code *lang*, a study *purview* (either IRB or Public
+        Health), and a REDCap project *event_id_map* that contains a map of a
+        project's unique event name to the associated `event_id` in REDCap.
+        """
         super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_SCAN(lang, purview), project_id)
         self.lang = lang
         self.purview = purview
-
+        self.event_id_map = event_id_map
 
 def main():
+    # Unfortunately, the REDCap API does not expose the event_id attribute which
+    # is required to generate deep links into a specific "page" in a REDCap
+    # project. The event_id changes per project event, so hard code the
+    # relationship between unique event name and event_id for each REDCap
+    # project.
+    #
+    # With the addition of all of these event maps, it'd be even nicer to
+    # extract out this data into a separate NDJSON/YAML file.
     projects = [
         # SCAN (public health action)
-        ScanProject(20759, "en", "ph"),
-        ScanProject(21520, "es", "ph"),
-        ScanProject(21521, "zh-Hant", "ph"),
+        ScanProject(20759, "en", "ph", {
+            'priority_arm_1': 732107,
+            'symptomatic_arm_2': 732126,
+            'asymptomatic_arm_3': 732127,
+        }),
+        ScanProject(21520, "es", "ph", {
+            'priority_arm_1': 735113,
+            'symptomatic_arm_2': 735114,
+            'asymptomatic_arm_3': 735115,
+        }),
+        ScanProject(21521, "zh-Hant", "ph", {
+            'priority_arm_1': 735116,
+            'symptomatic_arm_2': 735117,
+            'asymptomatic_arm_3': 735118,
+        }),
 
         # SCAN (research study)
-        ScanProject(22461, "en", "irb"),
-        ScanProject(22467, "tl", "irb"),
-        ScanProject(22468, "ti", "irb"),
-        ScanProject(22469, "ur", "irb"),
-        ScanProject(22470, "am", "irb"),
-        ScanProject(22471, "so", "irb"),
-        ScanProject(22472, "ru", "irb"),
-        ScanProject(22473, "zh-Hans", "irb"),
-        ScanProject(22474, "zh-Hant", "irb"),
-        ScanProject(22475, "es", "irb"),
-        ScanProject(22476, "ko", "irb"),
-        ScanProject(22477, "vi", "irb"),
-        ScanProject(23089, "en", "irb-kiosk"),
+        ScanProject(22467, "tl", "irb", {
+            'priority_arm_1': 737713,
+            'symptomatic_arm_2': 737714,
+            'asymptomatic_arm_3': 737715,
+            'group_enroll_arm_4': 737755,
+        }),
+        ScanProject(22468, "ti", "irb", {
+            'priority_arm_1': 737716,
+            'symptomatic_arm_2': 737717,
+            'asymptomatic_arm_3': 737718,
+            'group_enroll_arm_4': 737756,
+        }),
+        ScanProject(22469, "ur", "irb", {
+            'priority_arm_1': 737719,
+            'symptomatic_arm_2': 737720,
+            'asymptomatic_arm_3': 737721,
+            'group_enroll_arm_4': 737757,
+        }),
+        ScanProject(22470, "am", "irb", {
+            'priority_arm_1': 737722,
+            'symptomatic_arm_2': 737723,
+            'asymptomatic_arm_3': 737724,
+            'group_enroll_arm_4': 737758,
+        }),
+        ScanProject(22471, "so", "irb", {
+            'priority_arm_1': 737725,
+            'symptomatic_arm_2': 737726,
+            'asymptomatic_arm_3': 737727,
+            'group_enroll_arm_4': 737759,
+        }),
+        ScanProject(22461, "en", "irb", {
+            'priority_arm_1': 737705,
+            'symptomatic_arm_2': 737706,
+            'asymptomatic_arm_3': 737707,
+            'group_enroll_arm_4': 737754
+        }),
+        ScanProject(22472, "ru", "irb", {
+            'priority_arm_1': 737728,
+            'symptomatic_arm_2': 737729,
+            'asymptomatic_arm_3': 737730,
+            'group_enroll_arm_4': 737760,
+        }),
+        ScanProject(22473, "zh-Hans", "irb", {
+            'priority_arm_1': 737731,
+            'symptomatic_arm_2': 737732,
+            'asymptomatic_arm_3': 737733,
+            'group_enroll_arm_4': 737761,
+        }),
+        ScanProject(22474, "zh-Hant", "irb", {
+            'priority_arm_1': 737734,
+            'symptomatic_arm_2': 737735,
+            'asymptomatic_arm_3': 737736,
+            'group_enroll_arm_4': 737762,
+        }),
+        ScanProject(22475, "es", "irb", {
+            'priority_arm_1': 737737,
+            'symptomatic_arm_2': 737738,
+            'asymptomatic_arm_3': 737739,
+            'group_enroll_arm_4': 737763,
+        }),
+        ScanProject(22476, "ko", "irb", {
+            'priority_arm_1': 737740,
+            'symptomatic_arm_2': 737741,
+            'asymptomatic_arm_3': 737742,
+            'group_enroll_arm_4': 737764,
+        }),
+        ScanProject(22477, "vi", "irb", {
+            'priority_arm_1': 737743,
+            'symptomatic_arm_2': 737744,
+            'asymptomatic_arm_3': 737745,
+            'group_enroll_arm_4': 737765,
+        }),
+        ScanProject(23089, "en", "irb-kiosk", {
+            'priority_arm_1': 739632,
+            'symptomatic_arm_2': 739633,
+            'asymptomatic_arm_3': 739634,
+            'group_enroll_arm_4': 739635,
+        }),
+
+        # We're skipping REDCap PID 23959 (SCAN: Husky Test), because this
+        # was a one-off project that only had enrollments for a couple of weeks
+        # before the UW Reopening study launched.
 
         # UW Reopening Testing
         HuskyProject(23854)
@@ -80,31 +205,55 @@ def main():
 
 
 def fetch_records(project):
+    log.debug(f'Parsing project {project.id}')
+
     event_arm = {
         event["unique_event_name"]: event["arm_num"]
             for event in project._fetch("event") }
 
     for record in project.records(fields=FIELDS, raw=True):
+        event_name = record["redcap_event_name"]
+        arm = event_arm[event_name]
 
-        query = urlencode({
+        query_params = {
             "pid": project.id,
-            "arm": event_arm[record["redcap_event_name"]],
+            "arm": arm,
             "id": record.id,
-        })
+        }
 
-        record_url = urljoin(project.base_url, f"redcap_v{project.redcap_version}/DataEntry/record_home.php?{query}")
+        # Only deep link to the PCDEQC form if it exists
+        # ([post_collection_data_entry_qc_complete] != ""). Otherwise, link to
+        # the record home page.
+        if record['post_collection_data_entry_qc_complete'] == "":
+            redcap_endpoint = 'record_home'
+        else:
+            query_params['page'] = 'post_collection_data_entry_qc'
+            query_params['event_id'] = project.event_id_map[event_name]
+            redcap_endpoint = 'index'
+            # Instance is only needed for deep linking to a specific form, so
+            # don't bother including it in the query if we're directing users
+            # to the record home page.
+            instance = record.get('redcap_repeat_instance')
+            if instance:
+                query_params['instance'] = instance
+
+        query = urlencode(query_params)
+
+        record_url = urljoin(project.base_url,
+            f"redcap_v{project.redcap_version}/DataEntry/{redcap_endpoint}.php?{query}")
 
         data = {
             "project_id": project.id,
             "project_lang": project.lang,
             "project_purview": project.purview,
             "record_id": record.id,
+            "repeat_instance": record.get("redcap_repeat_instance"),  # Used in duplicate disambiguation
             "record_url": record_url,
             "record_link": {
                 "href": record_url,
                 "label": f"{record.id} ({project.lang})",
             },
-            "record_arm": record["redcap_event_name"],
+            "event_name": event_name,
             "back_end_scan_date": record.get("back_end_scan_date"),
 
             # The barcode fields were made optional for the SCAN IRB Kiosk project

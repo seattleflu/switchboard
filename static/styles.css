@@ -1,6 +1,6 @@
 /* Hide custom SQL form on db page; it's a distraction and clutter for our use
  * case.
  */
-body.db.db-scan-redcap form.sql {
+body.db.db-sfs-redcap form.sql {
   display: none;
 }

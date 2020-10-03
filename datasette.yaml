@@ -1,18 +1,18 @@
 ---
-title: SCAN Switchboard
+title: SFS Switchboard
 databases:
-  scan-redcap:
-    title: SCAN REDCap
+  sfs-redcap:
+    title: SFS REDCap
     description_html: |
-      <p>Summary information aggregated across the language-specific REDCap projects used by SCAN.
-      <p><em>Updated every minute.</em>
+      <p>Summary information aggregated across the language-specific REDCap projects used by SFS.
+      <p><em>Updated every 5 minutes.</em>
     queries:
       lookup-barcode:
         title: Barcode lookup
         sql: |
           select
             record_link as record,
-            record_arm,
+            event_name,
             back_end_scan_date,
             pre_scan_barcode,
             utm_tube_barcode_2,

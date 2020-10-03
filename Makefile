@@ -1,8 +1,8 @@
 SHELL := bash -euo pipefail
 
-.PHONY: data/scan-redcap.sqlite
+.PHONY: data/sfs-redcap.sqlite
 
-data/scan-redcap.sqlite: data/record-barcodes.ndjson derived-tables.sql
+data/sfs-redcap.sqlite: data/record-barcodes.ndjson derived-tables.sql
 	sqlite-utils insert --nl --truncate $@ record_barcodes $<
 	sqlite3 $@ < derived-tables.sql
 

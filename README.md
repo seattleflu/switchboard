@@ -46,6 +46,7 @@ credentials:
     REDCAP_API_TOKEN_VI
     REDCAP_API_TOKEN_ZH_HANT
     REDCAP_API_TOKEN_UW_REOPENING
+    REDCAP_API_TOKEN_CHILDCARE
     …
 
 These are the same variables used in the [backoffice/id3c-production/env.d/redcap-scan/] and [backoffice/id3c-production/env.d/redcap-sfs] envdirs.

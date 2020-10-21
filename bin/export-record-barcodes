@@ -29,14 +29,18 @@ REDCAP_API_TOKEN_SCAN = lambda lang, purview: \
     environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")] if purview == "ph" else \
     environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper().replace("-", "_"), lang.upper().replace("-", "_"))]
 REDCAP_API_TOKEN_UW_REOPENING = environ["REDCAP_API_TOKEN_UW_REOPENING"]
+REDCAP_API_TOKEN_CHILDCARE = environ["REDCAP_API_TOKEN_CHILDCARE"]
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
+    "utm_tube_barcode",
     "utm_tube_barcode_2",
     "reenter_barcode",
     "return_utm_barcode",
     "collect_barcode_kiosk",
     "barcode_swabsend",
+    *[f'barcode_{i}' for i in range(1,17)],
+    *[f'barcode_optional_{i}' for i in range(1,5)],
 ]
 
 FIELDS = [
@@ -82,6 +86,35 @@ class ScanProject(redcap.Project):
         self.lang = lang
         self.purview = purview
         self.event_id_map = event_id_map
+
+
+class ChildcareProject(redcap.Project):
+    def __init__(self, project_id: str) -> None:
+        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_CHILDCARE, project_id)
+        self.lang = 'en'
+        self.purview = 'irb'
+        self.event_id_map = {
+            'enrollment_arm_1': 742420,
+            'week1_mon_test_arm_1': 742421,
+            'week1_thur_test_arm_1': 742422,
+            'week2_mon_test_arm_1': 742423,
+            'week2_thur_test_arm_1': 742424,
+            'week3_mon_test_arm_1': 742425,
+            'week3_thur_test_arm_1': 742426,
+            'week4_mon_test_arm_1': 742427,
+            'week4_thur_test_arm_1': 742428,
+            'week5_mon_test_arm_1': 742429,
+            'week5_thur_test_arm_1': 742430,
+            'week6_mon_test_arm_1': 742431,
+            'week6_thur_test_arm_1': 742432,
+            'week7_mon_test_arm_1': 742433,
+            'week7_thur_test_arm_1': 742434,
+            'week8_mon_test_arm_1': 742435,
+            'week8_thur_test_arm_1': 742436,
+            'enrollment_arm_2': 742438,
+            'week_2_arm_2': 742439,
+        }
+
 
 def main():
     # Unfortunately, the REDCap API does not expose the event_id attribute which
@@ -195,7 +228,11 @@ def main():
         # before the UW Reopening study launched.
 
         # UW Reopening Testing
-        HuskyProject(23854)
+        HuskyProject(23854),
+
+        # Childcare Study
+        ChildcareProject(23740)
+
     ]
 
     with ThreadPoolExecutor(1) as pool:

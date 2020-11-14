@@ -1,3 +1,5 @@
+.timeout 10000
+
 drop table if exists duplicate_record_ids;
 
 create table duplicate_record_ids as

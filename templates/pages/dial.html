@@ -127,6 +127,11 @@
 
       const response = await fetch(`${formAction}.json?${params}`);
       const result = await response.json();
+
+      if (!result || !result.rows) {
+        throw exception("There was an error querying the database", result);
+      }
+
       const resultCount = result.rows.length;
 
       if (resultCount === 1) {

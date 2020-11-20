@@ -68,13 +68,19 @@ The "barcode dialer" is at <http://localhost:8001/dial>.
 
 ## Troubleshooting
 
-On MacOS, if you see this error message:
+### On MacOS, if you see this error message:
 
     ./bin/serve: line 6: realpath: command not found
 
-You can install realpath as part of coreutils, using Homebrew:
+    You can install realpath as part of coreutils, using Homebrew:
 
     brew install coreutils
+
+### `database is locked` error
+    SQLite handles concurrency differently than a client-server database system does.
+    In SQLite, a write operation can lock the entire database and prevent readers
+    from accessing it, for example. This is good resource for learning about
+    locks in SQLite: https://sqlite.org/lockingv3.html
 
 
 [backoffice/id3c-production/env.d/redcap-scan/]: https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap-scan/

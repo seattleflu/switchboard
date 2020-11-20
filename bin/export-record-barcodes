@@ -111,6 +111,7 @@ class ChildcareProject(redcap.Project):
             'week7_thur_test_arm_1': 742434,
             'week8_mon_test_arm_1': 742435,
             'week8_thur_test_arm_1': 742436,
+            'unscheduled_arm_1': 747706,
             'enrollment_arm_2': 742438,
             'week_2_arm_2': 742439,
         }

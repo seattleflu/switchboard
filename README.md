@@ -29,6 +29,8 @@ Activate the virtualenv to run any of the commands below:
 
     source .venv/bin/activate
 
+(Or alternatively, run the commands below via `./bin/venv-run`.)
+
 
 # Building the data
 

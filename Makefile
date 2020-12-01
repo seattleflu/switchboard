@@ -1,6 +1,6 @@
 SHELL := bash -euo pipefail
 
-.PHONY: data/sfs-redcap.sqlite
+.PHONY: data/sfs-redcap.sqlite venv requirements.txt
 
 data/sfs-redcap.sqlite: data/record-barcodes.ndjson derived-tables.sql
 	sqlite-utils insert --nl --truncate $@ record_barcodes_new $<
@@ -9,3 +9,12 @@ data/sfs-redcap.sqlite: data/record-barcodes.ndjson derived-tables.sql
 
 data/record-barcodes.ndjson:
 	./bin/export-record-barcodes > $@
+
+venv:
+	rm -rf .venv
+	python3.6 -m venv .venv
+	.venv/bin/pip install --upgrade pip setuptools wheel pip-tools
+	.venv/bin/pip install -r requirements.txt
+
+requirements.txt:
+	.venv/bin/pip-compile --generate-hashes --reuse-hashes

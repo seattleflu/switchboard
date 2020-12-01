@@ -13,24 +13,28 @@ is in.
 
 Requires:
 
-* Python 3.6+ and Pipenv
+* Python 3.6
 * SQLite CLI (`sqlite3`)
 
 Install the Python deps with:
 
-    pipenv sync
+    make venv
 
 and the SQLite CLI with:
 
     apt install sqlite3   # on Ubuntu/Debian
     brew install sqlite3  # on macOS with Homebrew
 
+Activate the virtualenv to run any of the commands below:
+
+    source .venv/bin/activate
+
 
 # Building the data
 
 You can build the _data/sfs-redcap.sqlite_ database with:
 
-    pipenv run make
+    make
 
 Data will be exported from REDCap the first time `make` is run.  Subsequent
 times will rebuild the SQLite database but not re-fetch from REDCap unless you
@@ -64,7 +68,7 @@ These are the same variables used in the [backoffice/id3c-production/env.d/redca
 
 You can serve the database with Datasette with:
 
-    pipenv run ./bin/serve
+    ./bin/serve
 
 and then browse the tables and views at <http://localhost:8001>.
 
@@ -73,6 +77,32 @@ There's a "canned query" for looking up barcodes at
 API is <http://localhost:8001/sfs-redcap/lookup-barcode.json?barcode=…>.
 
 The "barcode dialer" is at <http://localhost:8001/dial>.
+
+
+# Development
+
+## Adding or updating a Python dependency
+
+Python dependencies are managed with
+[pip-tools](https://github.com/jazzband/pip-tools).
+
+Edit _requirements.in_ to modify our top-level Python dependency declarations.
+
+Then, regenerate the fully-specified _requirements.txt_ using `pip-compile` with:
+
+    make requirements.txt
+
+Finally, re-create your virtualenv from scratch with:
+
+    make venv
+
+Or alternatively, apply the changes to your virtualenv in-place with:
+
+    pip-sync
+
+Once you're satisfied, make sure to commit your changes to both
+_requirements.in_ and _requirements.txt_.
+
 
 ## Troubleshooting
 

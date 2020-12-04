@@ -236,7 +236,7 @@ def main():
 
     ]
 
-    with ThreadPoolExecutor(1) as pool:
+    with ThreadPoolExecutor(5) as pool:
         for project_records in pool.map(lambda p: list(fetch_records(p)), projects):
             for record in project_records:
                 print(json.dumps(record, indent = None, separators = ",:"), flush = True)

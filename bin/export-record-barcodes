@@ -157,12 +157,6 @@ def main():
             'asymptomatic_arm_3': 737718,
             'group_enroll_arm_4': 737756,
         }),
-        ScanProject(22469, "ur", "irb", {
-            'priority_arm_1': 737719,
-            'symptomatic_arm_2': 737720,
-            'asymptomatic_arm_3': 737721,
-            'group_enroll_arm_4': 737757,
-        }),
         ScanProject(22470, "am", "irb", {
             'priority_arm_1': 737722,
             'symptomatic_arm_2': 737723,

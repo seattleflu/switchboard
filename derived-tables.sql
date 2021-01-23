@@ -46,7 +46,9 @@ create table duplicate_record_ids as
         barcode_optional_1,
         barcode_optional_2,
         barcode_optional_3,
-        barcode_optional_4
+        barcode_optional_4,
+        core_collection_barcode,
+        return_collection_barcode
     from
         record_barcodes
     where

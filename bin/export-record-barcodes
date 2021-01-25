@@ -24,12 +24,7 @@ log = logging.getLogger(__name__)
 log.setLevel(LOG_LEVEL)
 
 
-REDCAP_API_URL = environ["REDCAP_API_URL"]
-REDCAP_API_TOKEN_SCAN = lambda lang, purview: \
-    environ["REDCAP_API_TOKEN_%s" % lang.upper().replace("-", "_")] if purview == "ph" else \
-    environ["REDCAP_API_TOKEN_%s_%s" % (purview.upper().replace("-", "_"), lang.upper().replace("-", "_"))]
-REDCAP_API_TOKEN_UW_REOPENING = environ["REDCAP_API_TOKEN_UW_REOPENING"]
-REDCAP_API_TOKEN_CHILDCARE = environ["REDCAP_API_TOKEN_CHILDCARE"]
+REDCAP_API_URL = "https://redcap.iths.org/api/"
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
@@ -55,7 +50,7 @@ FIELDS = [
 
 class HuskyProject(redcap.Project):
     def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_UW_REOPENING, project_id)
+        super().__init__(REDCAP_API_URL, project_id)
         self.lang = 'en'
         self.purview = 'irb'
         # There are currently two events for this project: Enrollment and
@@ -82,7 +77,7 @@ class ScanProject(redcap.Project):
         Health), and a REDCap project *event_id_map* that contains a map of a
         project's unique event name to the associated `event_id` in REDCap.
         """
-        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_SCAN(lang, purview), project_id)
+        super().__init__(REDCAP_API_URL, project_id)
         self.lang = lang
         self.purview = purview
         self.event_id_map = event_id_map
@@ -90,7 +85,7 @@ class ScanProject(redcap.Project):
 
 class ChildcareProject(redcap.Project):
     def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, REDCAP_API_TOKEN_CHILDCARE, project_id)
+        super().__init__(REDCAP_API_URL, project_id)
         self.lang = 'en'
         self.purview = 'irb'
         self.event_id_map = {

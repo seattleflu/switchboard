@@ -36,6 +36,8 @@ BARCODE_FIELDS = [
     "barcode_swabsend",
     *[f'barcode_{i}' for i in range(1,17)],
     *[f'barcode_optional_{i}' for i in range(1,5)],
+    "core_collection_barcode",
+    "return_collection_barcode",
 ]
 
 FIELDS = [
@@ -110,6 +112,12 @@ class ChildcareProject(redcap.Project):
             'enrollment_arm_2': 742438,
             'week_2_arm_2': 742439,
         }
+
+class AFHWorkplaceOutbreakProject(redcap.Project):
+    def __init__(self, project_id: str) -> None:
+        super().__init__(REDCAP_API_URL, project_id)
+        self.lang = 'en'
+        self.purview='clinical'
 
 
 def main():
@@ -221,7 +229,10 @@ def main():
         HuskyProject(23854),
 
         # Childcare Study
-        ChildcareProject(23740)
+        ChildcareProject(23740),
+
+        # Adult Family Home and Workplace Outbreaks Study
+        AFHWorkplaceOutbreakProject(27619)
 
     ]
 
@@ -234,19 +245,21 @@ def main():
 def fetch_records(project):
     log.debug(f'Parsing project {project.id}')
 
-    event_arm = {
-        event["unique_event_name"]: event["arm_num"]
-            for event in project._fetch("event") }
+    if project._details["is_longitudinal"]:
+        event_arm = {
+            event["unique_event_name"]: event["arm_num"]
+                for event in project._fetch("event") }
 
     for record in project.records(fields=FIELDS, raw=True):
-        event_name = record["redcap_event_name"]
-        arm = event_arm[event_name]
-
         query_params = {
             "pid": project.id,
-            "arm": arm,
             "id": record.id,
         }
+
+        if project._details["is_longitudinal"]:
+            event_name = record["redcap_event_name"]
+            arm = event_arm[event_name]
+            query_params['arm'] = arm
 
         # Only deep link to the PCDEQC form if it exists
         # ([post_collection_data_entry_qc_complete] != ""). Otherwise, link to
@@ -255,7 +268,8 @@ def fetch_records(project):
             redcap_endpoint = 'record_home'
         else:
             query_params['page'] = 'post_collection_data_entry_qc'
-            query_params['event_id'] = project.event_id_map[event_name]
+            if project._details["is_longitudinal"]:
+                query_params['event_id'] = project.event_id_map[event_name]
             redcap_endpoint = 'index'
             # Instance is only needed for deep linking to a specific form, so
             # don't bother including it in the query if we're directing users
@@ -280,7 +294,6 @@ def fetch_records(project):
                 "href": record_url,
                 "label": f"{record.id} ({project.lang})",
             },
-            "event_name": event_name,
             "back_end_scan_date": record.get("back_end_scan_date"),
 
             # The barcode fields were made optional for the SCAN IRB Kiosk project
@@ -289,6 +302,9 @@ def fetch_records(project):
             # jccraft 07/17/2020
             **{ field: normalize_barcode(record.get(field)) for field in BARCODE_FIELDS }
         }
+
+        if project._details["is_longitudinal"]:
+            data['event_name'] = event_name
 
         yield data
 

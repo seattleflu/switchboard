@@ -34,7 +34,7 @@ BARCODE_FIELDS = [
     "return_utm_barcode",
     "collect_barcode_kiosk",
     "barcode_swabsend",
-    *[f'barcode_{i}' for i in range(1,17)],
+    *[f'barcode_{i}' for i in range(1,35)],
     *[f'barcode_optional_{i}' for i in range(1,5)],
     "core_collection_barcode",
     "return_collection_barcode",
@@ -144,6 +144,53 @@ class SnohomishSchoolsProject(redcap.Project):
             'week_15_arm_1': 757777,
             'enrollment_arm_2': 751929,
             'week_2_arm_2': 757064,
+        }
+
+
+class Childcare2021Project(redcap.Project):
+    def __init__(self, project_id: str) -> None:
+        super().__init__(REDCAP_API_URL, project_id)
+        self.lang = 'en'
+        self.purview = 'irb'
+        self.event_id_map = {
+            'enrollment_arm_1': 756831,
+            'week1_test_1_arm_1': 759847,
+            'week1_test_2_arm_1': 759852,
+            'week2_test_1_arm_1': 759857,
+            'week2_test_2_arm_1': 759862,
+            'week3_test_1_arm_1': 759867,
+            'week3_test_2_arm_1': 759872,
+            'week4_test_1_arm_1': 759877,
+            'week4_test_2_arm_1': 759882,
+            'week5_test_1_arm_1': 759887,
+            'week5_test_2_arm_1': 759892,
+            'week6_test_1_arm_1': 759897,
+            'week6_test_2_arm_1': 759902,
+            'week7_test_1_arm_1': 759907,
+            'week7_test_2_arm_1': 759912,
+            'week8_test_1_arm_1': 759917,
+            'week8_test_2_arm_1': 759922,
+            'week9_test_1_arm_1': 759927,
+            'week9_test_2_arm_1': 759932,
+            'week10_test_1_arm_1': 759937,
+            'week10_test_2_arm_1': 759942,
+            'week11_test_1_arm_1': 759947,
+            'week11_test_2_arm_1': 759952,
+            'week12_test_1_arm_1': 759957,
+            'week12_test_2_arm_1': 759962,
+            'week13_test_1_arm_1': 759967,
+            'week13_test_2_arm_1': 759972,
+            'week14_test_1_arm_1': 759977,
+            'week14_test_2_arm_1': 759982,
+            'week15_test_1_arm_1': 759987,
+            'week15_test_2_arm_1': 759992,
+            'week16_test_1_arm_1': 759997,
+            'week16_test_2_arm_1': 760002,
+            'week17_test_1_arm_1': 760007,
+            'week17_test_2_arm_1': 760012,
+            'unscheduled_arm_1': 756916,
+            'enrollment_arm_2': 756921,
+            'week_2_arm_2': 756926,
         }
 
 
@@ -263,6 +310,9 @@ def main():
 
         # Snohomish School District Testing
         SnohomishSchoolsProject(27574),
+
+        # 2021 Childcare Study
+        Childcare2021Project(29351),
 
     ]
 

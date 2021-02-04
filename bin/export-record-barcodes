@@ -120,6 +120,33 @@ class AFHWorkplaceOutbreakProject(redcap.Project):
         self.purview='clinical'
 
 
+class SnohomishSchoolsProject(redcap.Project):
+    def __init__(self, project_id: str) -> None:
+        super().__init__(REDCAP_API_URL, project_id)
+        self.lang = 'en'
+        self.purview = 'irb'
+        self.event_id_map = {
+            'enrollment_arm_1': 751314,
+            'week_1_arm_1': 757069,
+            'week_2_arm_1': 757072,
+            'week_3_arm_1': 757737,
+            'week_4_arm_1': 757739,
+            'week_5_arm_1': 757742,
+            'week_6_arm_1': 757745,
+            'week_7_arm_1': 757750,
+            'week_8_arm_1': 757752,
+            'week_9_arm_1': 757757,
+            'week_10_arm_1': 757762,
+            'week_11_arm_1': 757764,
+            'week_12_arm_1': 757765,
+            'week_13_arm_1': 757770,
+            'week_14_arm_1': 757772,
+            'week_15_arm_1': 757777,
+            'enrollment_arm_2': 751929,
+            'week_2_arm_2': 757064,
+        }
+
+
 def main():
     # Unfortunately, the REDCap API does not expose the event_id attribute which
     # is required to generate deep links into a specific "page" in a REDCap
@@ -232,7 +259,10 @@ def main():
         ChildcareProject(23740),
 
         # Adult Family Home and Workplace Outbreaks Study
-        AFHWorkplaceOutbreakProject(27619)
+        AFHWorkplaceOutbreakProject(27619),
+
+        # Snohomish School District Testing
+        SnohomishSchoolsProject(27574),
 
     ]
 

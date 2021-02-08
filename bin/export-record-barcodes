@@ -50,34 +50,18 @@ FIELDS = [
 ]
 
 
-class HuskyProject(redcap.Project):
-    def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, project_id)
-        self.lang = 'en'
-        self.purview = 'irb'
-        # There are currently two events for this project: Enrollment and
-        # Encounter events, both part of arm 1. None of the Enrollment event
-        # isntruments have any barcode fields, so include only the Encounter
-        # event_id.
-        #
-        # -kfay, 30 Sep 2020
-        self.event_id_map = {'encounter_arm_1': 742155}
-
-
-class ScanProject(redcap.Project):
-    lang: str
-    purview: Optional[str]
+class Project(redcap.Project):
 
     def __init__(self,
         project_id: int,
         lang: str,
-        purview: str,
-        event_id_map: Dict[int, int]) -> None:
+        purview: Optional[str] = '',
+        event_id_map: Optional[Dict[str, int]] = {}) -> None:
         """
-        Creates a SCAN Project object given the REDCap project PID *project_id*,
-        an ISO language code *lang*, a study *purview* (either IRB or Public
-        Health), and a REDCap project *event_id_map* that contains a map of a
-        project's unique event name to the associated `event_id` in REDCap.
+        Creates a Project object given the REDCap project PID *project_id*,
+        an ISO language code *lang*, a study *purview*, and a REDCap project
+        *event_id_map* that contains a map of a project's unique event name
+        to the associated `event_id` in REDCap.
         """
         super().__init__(REDCAP_API_URL, project_id)
         self.lang = lang
@@ -85,12 +69,122 @@ class ScanProject(redcap.Project):
         self.event_id_map = event_id_map
 
 
-class ChildcareProject(redcap.Project):
-    def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, project_id)
-        self.lang = 'en'
-        self.purview = 'irb'
-        self.event_id_map = {
+def main():
+    # Unfortunately, the REDCap API does not expose the event_id attribute which
+    # is required to generate deep links into a specific "page" in a REDCap
+    # project. The event_id changes per project event, so hard code the
+    # relationship between unique event name and event_id for each REDCap
+    # project.
+    #
+    # With the addition of all of these event maps, it'd be even nicer to
+    # extract out this data into a separate NDJSON/YAML file.
+    projects = [
+        # SCAN (public health action)
+        Project(20759, "en", "ph", {
+            'priority_arm_1': 732107,
+            'symptomatic_arm_2': 732126,
+            'asymptomatic_arm_3': 732127,
+        }),
+        Project(21520, "es", "ph", {
+            'priority_arm_1': 735113,
+            'symptomatic_arm_2': 735114,
+            'asymptomatic_arm_3': 735115,
+        }),
+        Project(21521, "zh-Hant", "ph", {
+            'priority_arm_1': 735116,
+            'symptomatic_arm_2': 735117,
+            'asymptomatic_arm_3': 735118,
+        }),
+
+        # SCAN (research study)
+        Project(22467, "tl", "irb", {
+            'priority_arm_1': 737713,
+            'symptomatic_arm_2': 737714,
+            'asymptomatic_arm_3': 737715,
+            'group_enroll_arm_4': 737755,
+        }),
+        Project(22468, "ti", "irb", {
+            'priority_arm_1': 737716,
+            'symptomatic_arm_2': 737717,
+            'asymptomatic_arm_3': 737718,
+            'group_enroll_arm_4': 737756,
+        }),
+        Project(22470, "am", "irb", {
+            'priority_arm_1': 737722,
+            'symptomatic_arm_2': 737723,
+            'asymptomatic_arm_3': 737724,
+            'group_enroll_arm_4': 737758,
+        }),
+        Project(22471, "so", "irb", {
+            'priority_arm_1': 737725,
+            'symptomatic_arm_2': 737726,
+            'asymptomatic_arm_3': 737727,
+            'group_enroll_arm_4': 737759,
+        }),
+        Project(22461, "en", "irb", {
+            'priority_arm_1': 737705,
+            'symptomatic_arm_2': 737706,
+            'asymptomatic_arm_3': 737707,
+            'group_enroll_arm_4': 737754
+        }),
+        Project(22472, "ru", "irb", {
+            'priority_arm_1': 737728,
+            'symptomatic_arm_2': 737729,
+            'asymptomatic_arm_3': 737730,
+            'group_enroll_arm_4': 737760,
+        }),
+        Project(22473, "zh-Hans", "irb", {
+            'priority_arm_1': 737731,
+            'symptomatic_arm_2': 737732,
+            'asymptomatic_arm_3': 737733,
+            'group_enroll_arm_4': 737761,
+        }),
+        Project(22474, "zh-Hant", "irb", {
+            'priority_arm_1': 737734,
+            'symptomatic_arm_2': 737735,
+            'asymptomatic_arm_3': 737736,
+            'group_enroll_arm_4': 737762,
+        }),
+        Project(22475, "es", "irb", {
+            'priority_arm_1': 737737,
+            'symptomatic_arm_2': 737738,
+            'asymptomatic_arm_3': 737739,
+            'group_enroll_arm_4': 737763,
+        }),
+        Project(22476, "ko", "irb", {
+            'priority_arm_1': 737740,
+            'symptomatic_arm_2': 737741,
+            'asymptomatic_arm_3': 737742,
+            'group_enroll_arm_4': 737764,
+        }),
+        Project(22477, "vi", "irb", {
+            'priority_arm_1': 737743,
+            'symptomatic_arm_2': 737744,
+            'asymptomatic_arm_3': 737745,
+            'group_enroll_arm_4': 737765,
+        }),
+        Project(23089, "en", "irb-kiosk", {
+            'priority_arm_1': 739632,
+            'symptomatic_arm_2': 739633,
+            'asymptomatic_arm_3': 739634,
+            'group_enroll_arm_4': 739635,
+        }),
+
+        # We're skipping REDCap PID 23959 (SCAN: Husky Test), because this
+        # was a one-off project that only had enrollments for a couple of weeks
+        # before the UW Reopening study launched.
+
+        # UW Reopening Testing (HCT)
+        # There are currently two events for this project: Enrollment and
+        # Encounter events, both part of arm 1. None of the Enrollment event
+        # instruments has any barcode fields, so include only the Encounter
+        # event_id.
+        Project(23854, "en", "irb", {
+            'encounter_arm_1': 742155,
+        }),
+
+        # Childcare Study
+        Project(23740, "en", "irb", {
             'enrollment_arm_1': 742420,
             'week1_mon_test_arm_1': 742421,
             'week1_thur_test_arm_1': 742422,
@@ -111,21 +205,13 @@ class ChildcareProject(redcap.Project):
             'unscheduled_arm_1': 747706,
             'enrollment_arm_2': 742438,
             'week_2_arm_2': 742439,
-        }
+        }),
 
-class AFHWorkplaceOutbreakProject(redcap.Project):
-    def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, project_id)
-        self.lang = 'en'
-        self.purview='clinical'
+        # Adult Family Home and Workplace Outbreaks Study
+        Project(27619, "en", "clinical", None),
 
-
-class SnohomishSchoolsProject(redcap.Project):
-    def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, project_id)
-        self.lang = 'en'
-        self.purview = 'irb'
-        self.event_id_map = {
+        # Snohomish School District Testing
+        Project(27574, "en", "irb", {
             'enrollment_arm_1': 751314,
             'week_1_arm_1': 757069,
             'week_2_arm_1': 757072,
@@ -144,15 +230,10 @@ class SnohomishSchoolsProject(redcap.Project):
             'week_15_arm_1': 757777,
             'enrollment_arm_2': 751929,
             'week_2_arm_2': 757064,
-        }
+        }),
 
-
-class Childcare2021Project(redcap.Project):
-    def __init__(self, project_id: str) -> None:
-        super().__init__(REDCAP_API_URL, project_id)
-        self.lang = 'en'
-        self.purview = 'irb'
-        self.event_id_map = {
+        # 2021 Childcare Study
+        Project(29351, "en", "irb", {
             'enrollment_arm_1': 756831,
             'week1_test_1_arm_1': 759847,
             'week1_test_2_arm_1': 759852,
@@ -191,129 +272,7 @@ class Childcare2021Project(redcap.Project):
             'unscheduled_arm_1': 756916,
             'enrollment_arm_2': 756921,
             'week_2_arm_2': 756926,
-        }
-
-
-def main():
-    # Unfortunately, the REDCap API does not expose the event_id attribute which
-    # is required to generate deep links into a specific "page" in a REDCap
-    # project. The event_id changes per project event, so hard code the
-    # relationship between unique event name and event_id for each REDCap
-    # project.
-    #
-    # With the addition of all of these event maps, it'd be even nicer to
-    # extract out this data into a separate NDJSON/YAML file.
-    projects = [
-        # SCAN (public health action)
-        ScanProject(20759, "en", "ph", {
-            'priority_arm_1': 732107,
-            'symptomatic_arm_2': 732126,
-            'asymptomatic_arm_3': 732127,
         }),
-        ScanProject(21520, "es", "ph", {
-            'priority_arm_1': 735113,
-            'symptomatic_arm_2': 735114,
-            'asymptomatic_arm_3': 735115,
-        }),
-        ScanProject(21521, "zh-Hant", "ph", {
-            'priority_arm_1': 735116,
-            'symptomatic_arm_2': 735117,
-            'asymptomatic_arm_3': 735118,
-        }),
-
-        # SCAN (research study)
-        ScanProject(22467, "tl", "irb", {
-            'priority_arm_1': 737713,
-            'symptomatic_arm_2': 737714,
-            'asymptomatic_arm_3': 737715,
-            'group_enroll_arm_4': 737755,
-        }),
-        ScanProject(22468, "ti", "irb", {
-            'priority_arm_1': 737716,
-            'symptomatic_arm_2': 737717,
-            'asymptomatic_arm_3': 737718,
-            'group_enroll_arm_4': 737756,
-        }),
-        ScanProject(22470, "am", "irb", {
-            'priority_arm_1': 737722,
-            'symptomatic_arm_2': 737723,
-            'asymptomatic_arm_3': 737724,
-            'group_enroll_arm_4': 737758,
-        }),
-        ScanProject(22471, "so", "irb", {
-            'priority_arm_1': 737725,
-            'symptomatic_arm_2': 737726,
-            'asymptomatic_arm_3': 737727,
-            'group_enroll_arm_4': 737759,
-        }),
-        ScanProject(22461, "en", "irb", {
-            'priority_arm_1': 737705,
-            'symptomatic_arm_2': 737706,
-            'asymptomatic_arm_3': 737707,
-            'group_enroll_arm_4': 737754
-        }),
-        ScanProject(22472, "ru", "irb", {
-            'priority_arm_1': 737728,
-            'symptomatic_arm_2': 737729,
-            'asymptomatic_arm_3': 737730,
-            'group_enroll_arm_4': 737760,
-        }),
-        ScanProject(22473, "zh-Hans", "irb", {
-            'priority_arm_1': 737731,
-            'symptomatic_arm_2': 737732,
-            'asymptomatic_arm_3': 737733,
-            'group_enroll_arm_4': 737761,
-        }),
-        ScanProject(22474, "zh-Hant", "irb", {
-            'priority_arm_1': 737734,
-            'symptomatic_arm_2': 737735,
-            'asymptomatic_arm_3': 737736,
-            'group_enroll_arm_4': 737762,
-        }),
-        ScanProject(22475, "es", "irb", {
-            'priority_arm_1': 737737,
-            'symptomatic_arm_2': 737738,
-            'asymptomatic_arm_3': 737739,
-            'group_enroll_arm_4': 737763,
-        }),
-        ScanProject(22476, "ko", "irb", {
-            'priority_arm_1': 737740,
-            'symptomatic_arm_2': 737741,
-            'asymptomatic_arm_3': 737742,
-            'group_enroll_arm_4': 737764,
-        }),
-        ScanProject(22477, "vi", "irb", {
-            'priority_arm_1': 737743,
-            'symptomatic_arm_2': 737744,
-            'asymptomatic_arm_3': 737745,
-            'group_enroll_arm_4': 737765,
-        }),
-        ScanProject(23089, "en", "irb-kiosk", {
-            'priority_arm_1': 739632,
-            'symptomatic_arm_2': 739633,
-            'asymptomatic_arm_3': 739634,
-            'group_enroll_arm_4': 739635,
-        }),
-
-        # We're skipping REDCap PID 23959 (SCAN: Husky Test), because this
-        # was a one-off project that only had enrollments for a couple of weeks
-        # before the UW Reopening study launched.
-
-        # UW Reopening Testing
-        HuskyProject(23854),
-
-        # Childcare Study
-        ChildcareProject(23740),
-
-        # Adult Family Home and Workplace Outbreaks Study
-        AFHWorkplaceOutbreakProject(27619),
-
-        # Snohomish School District Testing
-        SnohomishSchoolsProject(27574),
-
-        # 2021 Childcare Study
-        Childcare2021Project(29351),
-
     ]
 
     with ThreadPoolExecutor(5) as pool:

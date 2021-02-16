@@ -38,6 +38,12 @@ BARCODE_FIELDS = [
     *[f'barcode_optional_{i}' for i in range(1,5)],
     "core_collection_barcode",
     "return_collection_barcode",
+    *[f'welcome_barcode_{i}' for i in range(1,3)],
+    *[f'serial_barcode_{i}' for i in range(1,5)],
+    *[f'return_serial_barcode_{i}' for i in range(1,5)],
+    "outgoing_barcode",
+    "core_activation_barcode",
+    "collection_barcode",
 ]
 
 FIELDS = [
@@ -272,6 +278,19 @@ def main():
             'unscheduled_arm_1': 756916,
             'enrollment_arm_2': 756921,
             'week_2_arm_2': 756926,
+        }),
+
+        # Apple Respiratory Study
+        Project(24499, "en", "irb", {
+            'enrollment_arm_1': 743460,
+            'baseline_test_arm_1': 769723,
+            'illness_episode_arm_1': 769724,
+            'illness_kit_replac_arm_1': 769728,
+            'serial_kit_fulfill_arm_1': 769733,
+            'serial_event_1_arm_1': 769737,
+            'serial_event_2_arm_1': 769742,
+            'serial_event_3_arm_1': 769743,
+            'serial_event_4_arm_1': 769744,
         }),
     ]
 

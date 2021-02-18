@@ -66,7 +66,20 @@ create table duplicate_record_ids as
         barcode_optional_3,
         barcode_optional_4,
         core_collection_barcode,
-        return_collection_barcode
+        return_collection_barcode,
+        welcome_barcode_1,
+        welcome_barcode_2,
+        serial_barcode_1,
+        serial_barcode_2,
+        serial_barcode_3,
+        serial_barcode_4,
+        return_serial_barcode_1,
+        return_serial_barcode_2,
+        return_serial_barcode_3,
+        return_serial_barcode_4,
+        outgoing_barcode,
+        core_activation_barcode,
+        collection_barcode
     from
         record_barcodes
     where

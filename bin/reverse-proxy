@@ -10,5 +10,5 @@ use Plack::App::Proxy;
  
 builder {
     mount "/switchboard" =>
-        Plack::App::Proxy->new(remote => "http://127.0.0.1:3002")->to_app;
+        Plack::App::Proxy->new(remote => "http://127.0.0.1:3002/switchboard")->to_app;
 };

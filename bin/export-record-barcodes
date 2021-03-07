@@ -62,7 +62,8 @@ class Project(redcap.Project):
         project_id: int,
         lang: str,
         purview: Optional[str] = '',
-        event_id_map: Optional[Dict[str, int]] = {}) -> None:
+        event_id_map: Optional[Dict[str, int]] = {},
+        fetch_page_size: Optional[int] = None) -> None:
         """
         Creates a Project object given the REDCap project PID *project_id*,
         an ISO language code *lang*, a study *purview*, and a REDCap project
@@ -73,6 +74,7 @@ class Project(redcap.Project):
         self.lang = lang
         self.purview = purview
         self.event_id_map = event_id_map
+        self.fetch_page_size = fetch_page_size
 
 
 def main():
@@ -187,7 +189,7 @@ def main():
         # event_id.
         Project(23854, "en", "irb", {
             'encounter_arm_1': 742155,
-        }),
+        }, 1000),
 
         # Childcare Study
         Project(23740, "en", "irb", {
@@ -308,7 +310,7 @@ def fetch_records(project):
             event["unique_event_name"]: event["arm_num"]
                 for event in project._fetch("event") }
 
-    for record in project.records(fields=FIELDS, raw=True):
+    for record in project.records(fields=FIELDS, raw=True, page_size=project.fetch_page_size):
         query_params = {
             "pid": project.id,
             "id": record.id,

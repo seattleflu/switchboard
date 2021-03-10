@@ -1,4 +1,3 @@
 # Constraints to avoid upgrading these in the switch from Pipenv → pip-tools.
 # ID3C is constrained directly in requirements.in via the git commit id.
-datasette ==0.45
 sqlite-utils ==2.11

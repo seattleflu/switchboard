@@ -11,6 +11,6 @@ exec datasette serve \
      --static static:"$base/static" \
      --template-dir "$base/templates" \
      --port "$PORT" \
-     --config sql_time_limit_ms:10000 \
+     --setting sql_time_limit_ms 10000 \
      "$base/data/sfs-redcap.sqlite" \
      "$@"

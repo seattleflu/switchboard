@@ -189,7 +189,7 @@ def main():
         # event_id.
         Project(23854, "en", "irb", {
             'encounter_arm_1': 742155,
-        }, 1000),
+        }, 5000),
 
         # Childcare Study
         Project(23740, "en", "irb", {

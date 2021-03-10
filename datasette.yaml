@@ -144,3 +144,5 @@ databases:
             record_id
 extra_css_urls:
   - /static/styles.css
+extra_js_urls:
+  - /static/fix-links.js

@@ -41,7 +41,7 @@ You can build the _data/sfs-redcap.sqlite_ database with:
 Data will be exported from REDCap the first time `make` is run.  Subsequent
 times will rebuild the SQLite database but not re-fetch from REDCap unless you
 pass the `-B` / `--always-make` option (or delete
-_data/record-barcodes.ndjson_).
+_data/record-barcodes.csv_).
 
 You'll need to provide several environment variables with REDCap API
 credentials:

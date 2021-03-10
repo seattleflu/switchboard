@@ -2,8 +2,9 @@
 import os
 import json
 import logging
-from sys import stderr
-from concurrent.futures import ThreadPoolExecutor
+from csv import DictWriter
+from sys import stdout, stderr
+from concurrent.futures import as_completed, ThreadPoolExecutor
 from id3c.cli import redcap
 from os import environ
 from typing import Optional, Dict
@@ -46,12 +47,25 @@ BARCODE_FIELDS = [
     "collection_barcode",
 ]
 
-FIELDS = [
+REDCAP_FIELDS = [
     "record_id",
     "redcap_event_name",
     "back_end_scan_date",  # used for record disambiguation
     "redcap_repeat_instance",
     "post_collection_data_entry_qc_complete",  # used to see if we can deep link to the PCDEQC form
+    *BARCODE_FIELDS,
+]
+
+OUTPUT_FIELDS = [
+    "project_id",
+    "project_lang",
+    "project_purview",
+    "record_id",
+    "event_name",
+    "repeat_instance",
+    "record_url",
+    "record_link",
+    "back_end_scan_date",
     *BARCODE_FIELDS,
 ]
 
@@ -296,13 +310,27 @@ def main():
         }),
     ]
 
+    csv = DictWriter(stdout, fieldnames = OUTPUT_FIELDS, dialect = "unix")
+    csv.writeheader()
+    stdout.flush()
+
     with ThreadPoolExecutor(5) as pool:
-        for project_records in pool.map(lambda p: list(fetch_records(p)), projects):
+        futures = [
+            pool.submit(fetch_records, p)
+                for p in projects ]
+
+        results = (f.result() for f in as_completed(futures))
+
+        for project_records in results:
             for record in project_records:
-                print(json.dumps(record, indent = None, separators = ",:"), flush = True)
+                csv.writerow(record)
 
 
 def fetch_records(project):
+    return list(_fetch_records(project))
+
+
+def _fetch_records(project):
     log.debug(f'Parsing project {project.id}')
 
     if project._details["is_longitudinal"]:
@@ -310,7 +338,7 @@ def fetch_records(project):
             event["unique_event_name"]: event["arm_num"]
                 for event in project._fetch("event") }
 
-    for record in project.records(fields=FIELDS, raw=True, page_size=project.fetch_page_size):
+    for record in project.records(fields=REDCAP_FIELDS, raw=True, page_size=project.fetch_page_size):
         query_params = {
             "pid": project.id,
             "id": record.id,

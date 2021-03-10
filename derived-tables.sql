@@ -1,5 +1,7 @@
 .timeout 10000
 
+begin;
+
 drop table if exists duplicate_record_ids;
 
 create table duplicate_record_ids as
@@ -85,3 +87,5 @@ create table duplicate_record_ids as
     where
         (project_id, record_id) in (select project_id, record_id from duplicates)
 ;
+
+commit;

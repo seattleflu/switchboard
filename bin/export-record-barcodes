@@ -338,7 +338,7 @@ def _fetch_records(project):
             event["unique_event_name"]: event["arm_num"]
                 for event in project._fetch("event") }
 
-    for record in project.records(fields=REDCAP_FIELDS, raw=True, page_size=project.fetch_page_size):
+    for record in project.records(fields=REDCAP_FIELDS, filter=has_any_barcode(project), raw=True, page_size=project.fetch_page_size):
         query_params = {
             "pid": project.id,
             "id": record.id,
@@ -395,6 +395,11 @@ def _fetch_records(project):
             data['event_name'] = event_name
 
         yield data
+
+
+def has_any_barcode(project):
+    fields = set(BARCODE_FIELDS) & set(f["field_name"] for f in project.fields)
+    return " or ".join(f"[{field}] <> ''" for field in fields)
 
 
 def normalize_barcode(barcode):

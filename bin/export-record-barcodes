@@ -35,10 +35,18 @@ BARCODE_FIELDS = [
     "return_utm_barcode",
     "collect_barcode_kiosk",
     "barcode_swabsend",
+
+    # Childcare
     *[f'barcode_{i}' for i in range(1,35)],
     *[f'barcode_optional_{i}' for i in range(1,5)],
+    "barcode_ex1",
+    "barcode_ex2",
+
+    # AFH and Workplaces
     "core_collection_barcode",
     "return_collection_barcode",
+
+    # Apple
     *[f'welcome_barcode_{i}' for i in range(1,3)],
     *[f'serial_barcode_{i}' for i in range(1,5)],
     *[f'return_serial_barcode_{i}' for i in range(1,5)],

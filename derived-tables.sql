@@ -67,6 +67,8 @@ create table duplicate_record_ids as
         barcode_optional_2,
         barcode_optional_3,
         barcode_optional_4,
+        barcode_ex1,
+        barcode_ex2,
         core_collection_barcode,
         return_collection_barcode,
         welcome_barcode_1,

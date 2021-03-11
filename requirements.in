@@ -1,5 +1,2 @@
--c constraints.txt
-
-id3c @ https://github.com/seattleflu/id3c/archive/31a711e62c9a9e1516efb0a32d463275fa65ad5e.tar.gz
+id3c @ https://github.com/seattleflu/id3c/archive/a8a9d950d7dcba373fd46dc57cd228ed4c627e6a.tar.gz
 datasette >=0.55
-sqlite-utils >=2.11

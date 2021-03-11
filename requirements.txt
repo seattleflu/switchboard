@@ -98,9 +98,7 @@ chardet==3.0.4 \
     #   requests
 click-default-group==1.2.2 \
     --hash=sha256:d9560e8e8dfa44b3562fbc9425042a0fd6d21956fcc2db0077f63f34253ab904
-    # via
-    #   datasette
-    #   sqlite-utils
+    # via datasette
 click-plugins==1.1.1 \
     --hash=sha256:46ab999744a9d831159c3411bb0c79346d94a444df9a3a3742e9ed63645f264b \
     --hash=sha256:5d262006d3222f5057fd81e1623d4443e41dcda5dc815c06b442aa3c02889fc8
@@ -116,7 +114,6 @@ click==7.1.2 \
     #   fiona
     #   flask
     #   id3c
-    #   sqlite-utils
     #   uvicorn
 cligj==0.7.1 \
     --hash=sha256:07171c1e287f45511f97df4ea071abc5d19924153413d5683a8e4866369bc676 \
@@ -217,8 +214,8 @@ hupper==1.10.2 \
     --hash=sha256:3818f53dabc24da66f65cf4878c1c7a9b5df0c46b813e014abdd7c569eb9a02a \
     --hash=sha256:5de835f3b58324af2a8a16f52270c4d1a3d1734c45eed94b77fd622aea737f29
     # via datasette
-https://github.com/seattleflu/id3c/archive/31a711e62c9a9e1516efb0a32d463275fa65ad5e.tar.gz \
-    --hash=sha256:b1981f4b00fed5db1a99754166af3458e0b93ba1f922e0bd5943f8716ef67fe3
+https://github.com/seattleflu/id3c/archive/a8a9d950d7dcba373fd46dc57cd228ed4c627e6a.tar.gz \
+    --hash=sha256:376a0419ebab9c85bd9442eff3bac83e13312461de452490014ea9fdbaa0b3a5
     # via -r requirements.in
 idna-ssl==1.1.0 \
     --hash=sha256:a933e3bb13da54383f9e8f35dc4f9cb9eb9b3b78c6b36f311254d6d0d92c6c7c
@@ -587,15 +584,6 @@ sniffio==1.2.0 \
     # via
     #   httpcore
     #   httpx
-sqlite-utils==2.11 \
-    --hash=sha256:688ef44fdbb1a4c9a188d87c976562f659d8b29dc6dcc872d1cd7748d1c99ec9
-    # via
-    #   -c constraints.txt
-    #   -r requirements.in
-tabulate==0.8.7 \
-    --hash=sha256:ac64cb76d53b1231d364babcd72abbb16855adac7de6665122f97b593f1eb2ba \
-    --hash=sha256:db2723a20d04bcda8522165c73eea7c300eda74e0ce852d9022e0159d7895007
-    # via sqlite-utils
 typing-extensions==3.7.4.3 \
     --hash=sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918 \
     --hash=sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c \

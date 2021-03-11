@@ -45,6 +45,8 @@ create index if not exists barcode_optional_1 on record_barcodes(barcode_optiona
 create index if not exists barcode_optional_2 on record_barcodes(barcode_optional_2);
 create index if not exists barcode_optional_3 on record_barcodes(barcode_optional_3);
 create index if not exists barcode_optional_4 on record_barcodes(barcode_optional_4);
+create index if not exists barcode_ex1 on record_barcodes(barcode_ex1);
+create index if not exists barcode_ex2 on record_barcodes(barcode_ex2);
 create index if not exists core_collection_barcode on record_barcodes(core_collection_barcode);
 create index if not exists return_collection_barcode on record_barcodes(return_collection_barcode);
 create index if not exists welcome_barcode_1 on record_barcodes(welcome_barcode_1);

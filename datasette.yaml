@@ -11,7 +11,7 @@ databases:
         title: Barcode lookup
         sql: |
           select
-            record_link as record,
+            '{"href": "' || record_url || '", "label": "' || record_link_label || '"}' as record,
             event_name,
             back_end_scan_date,
             pre_scan_barcode,

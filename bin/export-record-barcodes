@@ -72,7 +72,7 @@ OUTPUT_FIELDS = [
     "event_name",
     "repeat_instance",
     "record_url",
-    "record_link",
+    "record_link_label",
     "back_end_scan_date",
     *BARCODE_FIELDS,
 ]
@@ -386,10 +386,7 @@ def _fetch_records(project):
             "record_id": record.id,
             "repeat_instance": record.get("redcap_repeat_instance"),  # Used in duplicate disambiguation
             "record_url": record_url,
-            "record_link": {
-                "href": record_url,
-                "label": f"{record.id} ({project.lang})",
-            },
+            "record_link_label": f"{record.id} ({project.lang})",
             "back_end_scan_date": record.get("back_end_scan_date"),
 
             # The barcode fields were made optional for the SCAN IRB Kiosk project

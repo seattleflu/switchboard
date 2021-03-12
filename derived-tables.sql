@@ -20,7 +20,7 @@ create table duplicate_record_ids as
         having count(*) > 1
     )
     select
-        record_link as record,
+        '{"href": "' || record_url || '", "label": "' || record_link_label || '"}' as record,
         event_name,
         pre_scan_barcode,
         utm_tube_barcode_2,

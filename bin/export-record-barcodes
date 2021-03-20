@@ -37,7 +37,7 @@ BARCODE_FIELDS = [
     "collect_barcode_kiosk",
     "barcode_swabsend",
 
-    # Childcare
+    # Childcare and Snohomish Schools
     *[f'barcode_{i}' for i in range(1,35)],
     *[f'barcode_optional_{i}' for i in range(1,5)],
     "barcode_ex1",
@@ -242,6 +242,7 @@ def main():
         Project(27619, "en", "clinical", None),
 
         # Snohomish School District Testing
+        # English
         Project(27574, "en", "irb", {
             'enrollment_arm_1': 751314,
             'week_1_arm_1': 757069,
@@ -261,6 +262,48 @@ def main():
             'week_15_arm_1': 757777,
             'enrollment_arm_2': 751929,
             'week_2_arm_2': 757064,
+        }),
+         # Russian
+        Project(32751, "ru", "irb", {
+           'enrollment_arm_1': 775811,
+            'week_1_arm_1': 775816,
+            'week_2_arm_1': 775821,
+            'week_3_arm_1': 775826,
+            'week_4_arm_1': 775831,
+            'week_5_arm_1': 775836,
+            'week_6_arm_1': 775841,
+            'week_7_arm_1': 775846,
+            'week_8_arm_1': 775851,
+            'week_9_arm_1': 775856,
+            'week_10_arm_1': 775861,
+            'week_11_arm_1': 775866,
+            'week_12_arm_1': 775871,
+            'week_13_arm_1': 775876,
+            'week_14_arm_1': 775881,
+            'week_15_arm_1': 775886,
+            'enrollment_arm_2': 775891,
+            'week_2_arm_2': 775896,
+        }),
+        # Spanish
+        Project(32756, "es", "irb", {
+           'enrollment_arm_1': 775901,
+            'week_1_arm_1': 775906,
+            'week_2_arm_1': 775911,
+            'week_3_arm_1': 775916,
+            'week_4_arm_1': 775921,
+            'week_5_arm_1': 775926,
+            'week_6_arm_1': 775931,
+            'week_7_arm_1': 775936,
+            'week_8_arm_1': 775941,
+            'week_9_arm_1': 775946,
+            'week_10_arm_1': 775951,
+            'week_11_arm_1': 775956,
+            'week_12_arm_1': 775961,
+            'week_13_arm_1': 775966,
+            'week_14_arm_1': 775971,
+            'week_15_arm_1': 775976,
+            'enrollment_arm_2': 775981,
+            'week_2_arm_2': 775986,
         }),
 
         # 2021 Childcare Study

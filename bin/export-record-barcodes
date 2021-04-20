@@ -36,7 +36,7 @@ BARCODE_FIELDS = [
     "collect_barcode_kiosk",
     "barcode_swabsend",
 
-    # Childcare and Snohomish Schools
+    # Childcare, Snohomish Schools, Yakima Schools
     *[f'barcode_{i}' for i in range(1,35)],
     *[f'barcode_optional_{i}' for i in range(1,5)],
     "barcode_ex1",
@@ -360,6 +360,40 @@ def main():
             'serial_event_2_arm_1': 769742,
             'serial_event_3_arm_1': 769743,
             'serial_event_4_arm_1': 769744,
+        }),
+
+        # Yakima School Radxup Testing
+        # English
+        Project(34101, "en", "irb", {
+            'enrollment_arm_1': 779626,
+            'week_1_arm_1': 779631,
+            'week_2_arm_1': 779636,
+            'week_3_arm_1': 779641,
+            'week_4_arm_1': 779646,
+            'week_5_arm_1': 779651,
+            'week_6_arm_1': 779656,
+            'week_7_arm_1': 779661,
+            'week_8_arm_1': 779666,
+            'week_9_arm_1': 779671,
+            'week_10_arm_1': 779676,
+            'enrollment_arm_2': 779706,
+            'week_2_arm_2': 779711,
+        }),
+        # Spanish
+        Project(34701, "es", "irb", {
+           'enrollment_arm_1': 781056,
+            'week_1_arm_1': 781061,
+            'week_2_arm_1': 781066,
+            'week_3_arm_1': 781071,
+            'week_4_arm_1': 781076,
+            'week_5_arm_1': 781081,
+            'week_6_arm_1': 781086,
+            'week_7_arm_1': 781091,
+            'week_8_arm_1': 781096,
+            'week_9_arm_1': 781101,
+            'week_10_arm_1': 781106,
+            'enrollment_arm_2': 781136,
+            'week_2_arm_2': 781141,
         }),
     ]
 

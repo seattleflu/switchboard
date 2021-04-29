@@ -53,6 +53,15 @@ BARCODE_FIELDS = [
     "outgoing_barcode",
     "core_activation_barcode",
     "collection_barcode",
+
+    # CLIA
+    "clia_barcode_verify",
+    "clia_id",
+    "core_clia_barcode",
+    "return_clia_barcode",
+    "scan_id",
+    "scan_id_kiosk",
+    "scan_id_manual",
 ]
 
 REDCAP_FIELDS = [

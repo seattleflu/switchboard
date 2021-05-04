@@ -214,8 +214,8 @@ hupper==1.10.2 \
     --hash=sha256:3818f53dabc24da66f65cf4878c1c7a9b5df0c46b813e014abdd7c569eb9a02a \
     --hash=sha256:5de835f3b58324af2a8a16f52270c4d1a3d1734c45eed94b77fd622aea737f29
     # via datasette
-https://github.com/seattleflu/id3c/archive/a8a9d950d7dcba373fd46dc57cd228ed4c627e6a.tar.gz \
-    --hash=sha256:376a0419ebab9c85bd9442eff3bac83e13312461de452490014ea9fdbaa0b3a5
+https://github.com/seattleflu/id3c/archive/f02cae65697bd2634b60b51a8f90c561958a2b3b.tar.gz \
+    --hash=sha256:3d7529307fcce72efc9b6e85c50a4a6dd636cc0ae255a68dbf4cad7a87f65eea
     # via -r requirements.in
 idna-ssl==1.1.0 \
     --hash=sha256:a933e3bb13da54383f9e8f35dc4f9cb9eb9b3b78c6b36f311254d6d0d92c6c7c

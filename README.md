@@ -81,13 +81,13 @@ You can serve the database with Datasette with:
 
     ./bin/serve
 
-and then browse the tables and views at <http://localhost:8001>.
+and then browse the tables and views at <http://localhost:3002>.
 
 There's a "canned query" for looking up barcodes at
-<http://localhost:8001/sfs-redcap/lookup-barcode>.  The corresponding JSON web
-API is <http://localhost:8001/sfs-redcap/lookup-barcode.json?barcode=…>.
+<http://localhost:3002/sfs-redcap/lookup-barcode>.  The corresponding JSON web
+API is <http://localhost:3002/sfs-redcap/lookup-barcode.json?barcode=…>.
 
-The "barcode dialer" is at <http://localhost:8001/dial>.
+The "barcode dialer" is at <http://localhost:3002/dial>.
 
 
 # Development

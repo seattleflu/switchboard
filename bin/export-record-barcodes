@@ -25,7 +25,8 @@ log = logging.getLogger(__name__)
 log.setLevel(LOG_LEVEL)
 
 
-REDCAP_API_URL = "https://redcap.iths.org/api/"
+ITHS_REDCAP_API_URL = "https://redcap.iths.org/api/"
+HCT_REDCAP_API_URL = "https://hct.redcap.rit.uw.edu/api/"
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
@@ -93,6 +94,7 @@ class Project(redcap.Project):
 
     def __init__(self,
         project_id: int,
+        redcap_api_url: str,
         lang: str,
         purview: Optional[str] = '',
         event_id_map: Optional[Dict[str, int]] = {},
@@ -103,7 +105,7 @@ class Project(redcap.Project):
         *event_id_map* that contains a map of a project's unique event name
         to the associated `event_id` in REDCap.
         """
-        super().__init__(REDCAP_API_URL, project_id)
+        super().__init__(redcap_api_url, project_id)
         self.lang = lang
         self.purview = purview
         self.event_id_map = event_id_map
@@ -121,90 +123,90 @@ def main():
     # extract out this data into a separate NDJSON/YAML file.
     projects = [
         # SCAN (public health action)
-        Project(20759, "en", "ph", {
+        Project(20759, ITHS_REDCAP_API_URL, "en", "ph", {
             'priority_arm_1': 732107,
             'symptomatic_arm_2': 732126,
             'asymptomatic_arm_3': 732127,
         }),
-        Project(21520, "es", "ph", {
+        Project(21520, ITHS_REDCAP_API_URL, "es", "ph", {
             'priority_arm_1': 735113,
             'symptomatic_arm_2': 735114,
             'asymptomatic_arm_3': 735115,
         }),
-        Project(21521, "zh-Hant", "ph", {
+        Project(21521, ITHS_REDCAP_API_URL, "zh-Hant", "ph", {
             'priority_arm_1': 735116,
             'symptomatic_arm_2': 735117,
             'asymptomatic_arm_3': 735118,
         }),
 
         # SCAN (research study)
-        Project(22467, "tl", "irb", {
+        Project(22467, ITHS_REDCAP_API_URL, "tl", "irb", {
             'priority_arm_1': 737713,
             'symptomatic_arm_2': 737714,
             'asymptomatic_arm_3': 737715,
             'group_enroll_arm_4': 737755,
         }),
-        Project(22468, "ti", "irb", {
+        Project(22468, ITHS_REDCAP_API_URL, "ti", "irb", {
             'priority_arm_1': 737716,
             'symptomatic_arm_2': 737717,
             'asymptomatic_arm_3': 737718,
             'group_enroll_arm_4': 737756,
         }),
-        Project(22470, "am", "irb", {
+        Project(22470, ITHS_REDCAP_API_URL, "am", "irb", {
             'priority_arm_1': 737722,
             'symptomatic_arm_2': 737723,
             'asymptomatic_arm_3': 737724,
             'group_enroll_arm_4': 737758,
         }),
-        Project(22471, "so", "irb", {
+        Project(22471, ITHS_REDCAP_API_URL, "so", "irb", {
             'priority_arm_1': 737725,
             'symptomatic_arm_2': 737726,
             'asymptomatic_arm_3': 737727,
             'group_enroll_arm_4': 737759,
         }),
-        Project(22461, "en", "irb", {
+        Project(22461, ITHS_REDCAP_API_URL, "en", "irb", {
             'priority_arm_1': 737705,
             'symptomatic_arm_2': 737706,
             'asymptomatic_arm_3': 737707,
             'group_enroll_arm_4': 737754
         }),
-        Project(22472, "ru", "irb", {
+        Project(22472, ITHS_REDCAP_API_URL, "ru", "irb", {
             'priority_arm_1': 737728,
             'symptomatic_arm_2': 737729,
             'asymptomatic_arm_3': 737730,
             'group_enroll_arm_4': 737760,
         }),
-        Project(22473, "zh-Hans", "irb", {
+        Project(22473, ITHS_REDCAP_API_URL, "zh-Hans", "irb", {
             'priority_arm_1': 737731,
             'symptomatic_arm_2': 737732,
             'asymptomatic_arm_3': 737733,
             'group_enroll_arm_4': 737761,
         }),
-        Project(22474, "zh-Hant", "irb", {
+        Project(22474, ITHS_REDCAP_API_URL, "zh-Hant", "irb", {
             'priority_arm_1': 737734,
             'symptomatic_arm_2': 737735,
             'asymptomatic_arm_3': 737736,
             'group_enroll_arm_4': 737762,
         }),
-        Project(22475, "es", "irb", {
+        Project(22475, ITHS_REDCAP_API_URL, "es", "irb", {
             'priority_arm_1': 737737,
             'symptomatic_arm_2': 737738,
             'asymptomatic_arm_3': 737739,
             'group_enroll_arm_4': 737763,
         }),
-        Project(22476, "ko", "irb", {
+        Project(22476, ITHS_REDCAP_API_URL, "ko", "irb", {
             'priority_arm_1': 737740,
             'symptomatic_arm_2': 737741,
             'asymptomatic_arm_3': 737742,
             'group_enroll_arm_4': 737764,
         }),
-        Project(22477, "vi", "irb", {
+        Project(22477, ITHS_REDCAP_API_URL, "vi", "irb", {
             'priority_arm_1': 737743,
             'symptomatic_arm_2': 737744,
             'asymptomatic_arm_3': 737745,
             'group_enroll_arm_4': 737765,
         }),
-        Project(23089, "en", "irb-kiosk", {
+        Project(23089, ITHS_REDCAP_API_URL, "en", "irb-kiosk", {
             'priority_arm_1': 739632,
             'symptomatic_arm_2': 739633,
             'asymptomatic_arm_3': 739634,
@@ -220,12 +222,21 @@ def main():
         # Encounter events, both part of arm 1. None of the Enrollment event
         # instruments has any barcode fields, so include only the Encounter
         # event_id.
-        Project(23854, "en", "irb", {
+        Project(23854, ITHS_REDCAP_API_URL, "en", "irb", {
             'encounter_arm_1': 742155,
         }, 5000),
 
+        # HCT 2021-2022 REDCap project
+        # A dedicated REDCap server was created for HCT becuase the load
+        # on the shared ITHS REDCap server was too heavy. Existing HCT project
+        # (PID 23854) remains on ITHS REDCap server for the time being, but may
+        # eventually be migrated to the HCT REDCap instance.
+        Project(45, HCT_REDCAP_API_URL, "en", "irb", {
+            'encounter_arm_1': 129,
+        }, 5000),
+        
         # Childcare Study
-        Project(23740, "en", "irb", {
+        Project(23740, ITHS_REDCAP_API_URL, "en", "irb", {
             'enrollment_arm_1': 742420,
             'week1_mon_test_arm_1': 742421,
             'week1_thur_test_arm_1': 742422,
@@ -249,11 +260,11 @@ def main():
         }),
 
         # Adult Family Home and Workplace Outbreaks Study
-        Project(27619, "en", "clinical", None),
+        Project(27619, ITHS_REDCAP_API_URL, "en", "clinical", None),
 
         # Snohomish School District Testing
         # English
-        Project(27574, "en", "irb", {
+        Project(27574, ITHS_REDCAP_API_URL, "en", "irb", {
             'enrollment_arm_1': 751314,
             'week_1_arm_1': 757069,
             'week_2_arm_1': 757072,
@@ -274,7 +285,7 @@ def main():
             'week_2_arm_2': 757064,
         }),
          # Russian
-        Project(32751, "ru", "irb", {
+        Project(32751, ITHS_REDCAP_API_URL, "ru", "irb", {
            'enrollment_arm_1': 775811,
             'week_1_arm_1': 775816,
             'week_2_arm_1': 775821,
@@ -295,7 +306,7 @@ def main():
             'week_2_arm_2': 775896,
         }),
         # Spanish
-        Project(32756, "es", "irb", {
+        Project(32756, ITHS_REDCAP_API_URL, "es", "irb", {
            'enrollment_arm_1': 775901,
             'week_1_arm_1': 775906,
             'week_2_arm_1': 775911,
@@ -317,7 +328,7 @@ def main():
         }),
 
         # 2021 Childcare Study
-        Project(29351, "en", "irb", {
+        Project(29351, ITHS_REDCAP_API_URL, "en", "irb", {
             'enrollment_arm_1': 756831,
             'week1_test_1_arm_1': 759847,
             'week1_test_2_arm_1': 759852,
@@ -359,7 +370,7 @@ def main():
         }),
 
         # Apple Respiratory Study
-        Project(24499, "en", "irb", {
+        Project(24499, ITHS_REDCAP_API_URL, "en", "irb", {
             'enrollment_arm_1': 743460,
             'baseline_test_arm_1': 769723,
             'illness_episode_arm_1': 769724,
@@ -373,7 +384,7 @@ def main():
 
         # Yakima School Radxup Testing
         # English
-        Project(34101, "en", "irb", {
+        Project(34101, ITHS_REDCAP_API_URL, "en", "irb", {
             'enrollment_arm_1': 779626,
             'week_1_arm_1': 779631,
             'week_2_arm_1': 779636,
@@ -389,7 +400,7 @@ def main():
             'week_2_arm_2': 779711,
         }),
         # Spanish
-        Project(34701, "es", "irb", {
+        Project(34701, ITHS_REDCAP_API_URL, "es", "irb", {
            'enrollment_arm_1': 781056,
             'week_1_arm_1': 781061,
             'week_2_arm_1': 781066,
@@ -405,6 +416,7 @@ def main():
             'week_2_arm_2': 781141,
         }),
     ]
+
 
     csv = DictWriter(stdout, fieldnames = OUTPUT_FIELDS, dialect = "unix")
     csv.writeheader()

@@ -71,6 +71,7 @@ credentials:
     REDCAP_API_TOKEN_redcap.iths.org_32756
     REDCAP_API_TOKEN_redcap.iths.org_34101
     REDCAP_API_TOKEN_redcap.iths.org_34701
+    REDCAP_API_TOKEN_hct.redcap.rit.uw.edu_45
 
 These are the same variables used in the [backoffice/id3c-production/env.d/redcap/] envdir.
 

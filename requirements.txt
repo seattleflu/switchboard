@@ -55,6 +55,10 @@ aioitertools==0.7.1 \
     --hash=sha256:54a56c7cf3b5290d1cb5e8974353c9f52c677612b5d69a859369a020c53414a3 \
     --hash=sha256:8972308474c41ed5e0636819f948ebff32f2318e70f7e7d23cd208c4357cc773
     # via aiobotocore
+anyio==3.3.4 \
+    --hash=sha256:4fd09a25ab7fa01d34512b7249e366cd10358cdafc95022c7ff8c8f8a5026d66 \
+    --hash=sha256:67da67b5b21f96b9d3d65daa6ea99f5d5282cb09f50eb4456f8fb51dffefc3ff
+    # via httpcore
 asgi-csrf==0.7.1 \
     --hash=sha256:77bfb2a3311643fd2304d0f11f72160559acbbd1a35730a54208135ded3f21a3 \
     --hash=sha256:c6c862b4d9d78bb0297524c5e5447d26b210bef85c4304ace87d8ae1917f0efa
@@ -96,6 +100,10 @@ chardet==3.0.4 \
     # via
     #   aiohttp
     #   requests
+charset-normalizer==2.0.7 \
+    --hash=sha256:e019de665e2bcf9c2b64e2e5aa025fa991da8720daa3c1138cadd2fd1856aed0 \
+    --hash=sha256:f7af805c321bfa1ce6714c51f254e0d5bb5e5834039bc17db7ebe3a4cec9492b
+    # via httpx
 click==7.1.2 \
     --hash=sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a \
     --hash=sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc
@@ -123,9 +131,9 @@ colorama==0.4.4 \
     --hash=sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b \
     --hash=sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2
     # via id3c
-datasette==0.55 \
-    --hash=sha256:524c2efd20d3ed1a033e8b347f7462adbe3e8ebf0c1b1750df61ed27c717a4c4 \
-    --hash=sha256:f7196e2ac672b4852e21a32b575aa81652dabce6bfc9fd52d410dd5740b87011
+datasette==0.56.1 \
+    --hash=sha256:9785247eb05a5cc7ff65928cfc07e02ce62405fd278ab3d61796bffdf0074086 \
+    --hash=sha256:9cb0b2ff6f512de559ff2ba1ab369f499d921763c8e9cf6d0affb6143d0bb16a
     # via -r requirements.in
 deepdiff==5.0.2 \
     --hash=sha256:273b18d32bb9b956548290b2e3ddf79c515def2dd5738965f4348ae813e710c5 \
@@ -192,9 +200,9 @@ h11==0.11.0 \
     # via
     #   httpcore
     #   uvicorn
-httpcore==0.12.3 \
-    --hash=sha256:37ae835fb370049b2030c3290e12ed298bf1473c41bb72ca4aa78681eba9b7c9 \
-    --hash=sha256:93e822cd16c32016b414b789aeff4e855d0ccbfc51df563ee34d4dbadbb3bcdc
+httpcore==0.13.7 \
+    --hash=sha256:036f960468759e633574d7c121afba48af6419615d36ab8ede979f1ad6276fa3 \
+    --hash=sha256:369aa481b014cf046f7067fddd67d00560f2f00426e79569d99cb11245134af0
     # via httpx
 httplib2==0.19.0 \
     --hash=sha256:749c32603f9bf16c1277f59531d502e8f1c2ca19901ae653b49c4ed698f0820e \
@@ -203,9 +211,9 @@ httplib2==0.19.0 \
     #   google-api-python-client
     #   google-auth-httplib2
     #   oauth2client
-httpx==0.16.1 \
-    --hash=sha256:126424c279c842738805974687e0518a94c7ae8d140cd65b9c4f77ac46ffa537 \
-    --hash=sha256:9cffb8ba31fac6536f2c8cde30df859013f59e4bcc5b8d43901cb3654a8e0a5b
+httpx==0.20.0 \
+    --hash=sha256:09606d630f070d07f9ff28104fbcea429ea0014c1e89ac90b4d8de8286c40e7b \
+    --hash=sha256:33af5aad9bdc82ef1fc89219c1e36f5693bf9cd0ebe330884df563445682c0f8
     # via datasette
 hupper==1.10.2 \
     --hash=sha256:3818f53dabc24da66f65cf4878c1c7a9b5df0c46b813e014abdd7c569eb9a02a \
@@ -218,6 +226,7 @@ idna==2.10 \
     --hash=sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6 \
     --hash=sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0
     # via
+    #   anyio
     #   requests
     #   rfc3986
     #   yarl
@@ -558,6 +567,7 @@ sniffio==1.2.0 \
     --hash=sha256:471b71698eac1c2112a40ce2752bb2f4a4814c22a54a3eed3676bc0f5ca9f663 \
     --hash=sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de
     # via
+    #   anyio
     #   httpcore
     #   httpx
 typing-extensions==3.7.4.3 \

@@ -14,7 +14,7 @@ data/record-barcodes.csv:
 
 venv:
 	rm -rf .venv
-	python3.6 -m venv .venv
+	python3 -m venv .venv
 	.venv/bin/pip install --upgrade pip setuptools wheel pip-tools
 	.venv/bin/pip install -r requirements.txt
 

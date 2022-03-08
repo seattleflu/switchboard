@@ -388,25 +388,23 @@ def main():
             'serial_event_3_arm_1': 769743,
             'serial_event_4_arm_1': 769744,
         }),
-        """
         # Yakima School Radxup Testing
         # English
-        Project(34101, ITHS_REDCAP_API_URL, "en", "irb", {
-            'enrollment_arm_1': 779626,
-            'week_1_arm_1': 779631,
-            'week_2_arm_1': 779636,
-            'week_3_arm_1': 779641,
-            'week_4_arm_1': 779646,
-            'week_5_arm_1': 779651,
-            'week_6_arm_1': 779656,
-            'week_7_arm_1': 779661,
-            'week_8_arm_1': 779666,
-            'week_9_arm_1': 779671,
-            'week_10_arm_1': 779676,
-            'enrollment_arm_2': 779706,
-            'week_2_arm_2': 779711,
-        }),
-        """
+        # Project(34101, ITHS_REDCAP_API_URL, "en", "irb", {
+            # 'enrollment_arm_1': 779626,
+            # 'week_1_arm_1': 779631,
+            # 'week_2_arm_1': 779636,
+            # 'week_3_arm_1': 779641,
+            # 'week_4_arm_1': 779646,
+            # 'week_5_arm_1': 779651,
+            # 'week_6_arm_1': 779656,
+            # 'week_7_arm_1': 779661,
+            # 'week_8_arm_1': 779666,
+            # 'week_9_arm_1': 779671,
+            # 'week_10_arm_1': 779676,
+            # 'enrollment_arm_2': 779706,
+            # 'week_2_arm_2': 779711,
+        # }),
         # Spanish
         Project(34701, ITHS_REDCAP_API_URL, "es", "irb", {
            'enrollment_arm_1': 781056,

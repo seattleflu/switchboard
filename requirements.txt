@@ -329,8 +329,8 @@ hupper==1.10.3 \
     --hash=sha256:cd6f51b72c7587bc9bce8a65ecd025a1e95f1b03284519bfe91284d010316cd9 \
     --hash=sha256:f683850d62598c02faf3c7cdaaa727d8cbe3c5a2497a5737a8358386903b2601
     # via datasette
-id3c @ https://github.com/seattleflu/id3c/archive/0aae701a28232aea5acecfb91261e6c79a9fe7a0.tar.gz \
-    --hash=sha256:d03ef7298a5f645965842f65ffcd89548e09a56c135e6ccf5ad4911fc1e9878c
+id3c @ https://github.com/seattleflu/id3c/archive/e979f860b237b73855155c2d2764e4aa54aa44d6.tar.gz \
+    --hash=sha256:a53342a2677291d152f0c6a76113a3061aabcab0a105990abf8025fafdf09db0
     # via -r requirements.in
 idna==3.3 \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
@@ -343,7 +343,7 @@ idna==3.3 \
 isodate==0.6.0 \
     --hash=sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8 \
     --hash=sha256:aa4d33c06640f5352aca96e4b81afd8ab3b47337cc12089822d6f322ac772c81
-    # via fhir.resources
+    # via fhir-resources
 itsdangerous==2.0.1 \
     --hash=sha256:5174094b9637652bdb841a3029700391451bd092ba3db90600dea710ba28e97c \
     --hash=sha256:9e724d68fc22902a1435351f84c3fb8623f303fffcc566a4cb952df8c572cff0

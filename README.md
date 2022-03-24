@@ -69,8 +69,6 @@ credentials:
     REDCAP_API_TOKEN_redcap.iths.org_24499
     REDCAP_API_TOKEN_redcap.iths.org_32751
     REDCAP_API_TOKEN_redcap.iths.org_32756
-    REDCAP_API_TOKEN_redcap.iths.org_34101
-    REDCAP_API_TOKEN_redcap.iths.org_34701
     REDCAP_API_TOKEN_redcap.iths.org_45732
     REDCAP_API_TOKEN_hct.redcap.rit.uw.edu_45
 

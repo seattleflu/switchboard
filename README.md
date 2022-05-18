@@ -115,5 +115,4 @@ _requirements.in_ and _requirements.txt_.
     locks in SQLite: https://sqlite.org/lockingv3.html
 
 
-[backoffice/id3c-production/env.d/redcap-scan/]: https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap-scan/
-[backoffice/id3c-production/env.d/redcap-sfs]: https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap-sfs
+[backoffice/id3c-production/env.d/redcap/]: https://github.com/seattleflu/backoffice/tree/master/id3c-production/env.d/redcap/

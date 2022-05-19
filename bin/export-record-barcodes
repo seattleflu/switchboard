@@ -37,23 +37,9 @@ BARCODE_FIELDS = [
     "collect_barcode_kiosk",
     "barcode_swabsend",
 
-    # Childcare, Snohomish Schools
-    *[f'barcode_{i}' for i in range(1,35)],
-    *[f'barcode_optional_{i}' for i in range(1,5)],
-    "barcode_ex1",
-    "barcode_ex2",
-
     # AFH and Workplaces
     "core_collection_barcode",
     "return_collection_barcode",
-
-    # Apple
-    *[f'welcome_barcode_{i}' for i in range(1,3)],
-    *[f'serial_barcode_{i}' for i in range(1,5)],
-    *[f'return_serial_barcode_{i}' for i in range(1,5)],
-    "outgoing_barcode",
-    "core_activation_barcode",
-    "collection_barcode",
 
     # CLIA
     "clia_barcode_verify",
@@ -63,10 +49,6 @@ BARCODE_FIELDS = [
     "scan_id",
     "scan_id_kiosk",
     "scan_id_manual",
-
-    # SCAN: Tiny Swabs
-    "ans_collection_id",
-    "tiny_collection_id",
 ]
 
 REDCAP_FIELDS = [
@@ -126,48 +108,7 @@ def main():
     # With the addition of all of these event maps, it'd be even nicer to
     # extract out this data into a separate NDJSON/YAML file.
     projects = [
-        # SCAN (public health action)
-        Project(20759, ITHS_REDCAP_API_URL, "en", "ph", {
-            'priority_arm_1': 732107,
-            'symptomatic_arm_2': 732126,
-            'asymptomatic_arm_3': 732127,
-        }),
-        Project(21520, ITHS_REDCAP_API_URL, "es", "ph", {
-            'priority_arm_1': 735113,
-            'symptomatic_arm_2': 735114,
-            'asymptomatic_arm_3': 735115,
-        }),
-        Project(21521, ITHS_REDCAP_API_URL, "zh-Hant", "ph", {
-            'priority_arm_1': 735116,
-            'symptomatic_arm_2': 735117,
-            'asymptomatic_arm_3': 735118,
-        }),
-
         # SCAN (research study)
-        Project(22467, ITHS_REDCAP_API_URL, "tl", "irb", {
-            'priority_arm_1': 737713,
-            'symptomatic_arm_2': 737714,
-            'asymptomatic_arm_3': 737715,
-            'group_enroll_arm_4': 737755,
-        }),
-        Project(22468, ITHS_REDCAP_API_URL, "ti", "irb", {
-            'priority_arm_1': 737716,
-            'symptomatic_arm_2': 737717,
-            'asymptomatic_arm_3': 737718,
-            'group_enroll_arm_4': 737756,
-        }),
-        Project(22470, ITHS_REDCAP_API_URL, "am", "irb", {
-            'priority_arm_1': 737722,
-            'symptomatic_arm_2': 737723,
-            'asymptomatic_arm_3': 737724,
-            'group_enroll_arm_4': 737758,
-        }),
-        Project(22471, ITHS_REDCAP_API_URL, "so", "irb", {
-            'priority_arm_1': 737725,
-            'symptomatic_arm_2': 737726,
-            'asymptomatic_arm_3': 737727,
-            'group_enroll_arm_4': 737759,
-        }),
         Project(22461, ITHS_REDCAP_API_URL, "en", "irb", {
             'priority_arm_1': 737705,
             'symptomatic_arm_2': 737706,
@@ -180,12 +121,6 @@ def main():
             'asymptomatic_arm_3': 737730,
             'group_enroll_arm_4': 737760,
         }),
-        Project(22473, ITHS_REDCAP_API_URL, "zh-Hans", "irb", {
-            'priority_arm_1': 737731,
-            'symptomatic_arm_2': 737732,
-            'asymptomatic_arm_3': 737733,
-            'group_enroll_arm_4': 737761,
-        }),
         Project(22474, ITHS_REDCAP_API_URL, "zh-Hant", "irb", {
             'priority_arm_1': 737734,
             'symptomatic_arm_2': 737735,
@@ -197,12 +132,6 @@ def main():
             'symptomatic_arm_2': 737738,
             'asymptomatic_arm_3': 737739,
             'group_enroll_arm_4': 737763,
-        }),
-        Project(22476, ITHS_REDCAP_API_URL, "ko", "irb", {
-            'priority_arm_1': 737740,
-            'symptomatic_arm_2': 737741,
-            'asymptomatic_arm_3': 737742,
-            'group_enroll_arm_4': 737764,
         }),
         Project(22477, ITHS_REDCAP_API_URL, "vi", "irb", {
             'priority_arm_1': 737743,
@@ -217,177 +146,21 @@ def main():
             'group_enroll_arm_4': 739635,
         }),
 
-        # SCAN: Tiny Swabs (usability study)
-        Project(45732, ITHS_REDCAP_API_URL, "en", "irb", None),
-
-        # We're skipping REDCap PID 23959 (SCAN: Husky Test), because this
-        # was a one-off project that only had enrollments for a couple of weeks
-        # before the UW Reopening study launched.
-
         # UW Reopening Testing (HCT)
         # There are currently two events for this project: Enrollment and
         # Encounter events, both part of arm 1. None of the Enrollment event
         # instruments has any barcode fields, so include only the Encounter
         # event_id.
-        # This is the old HCT project and should be disabled.
-        # The new one runs on the HCT_REDCAP_API_URL server
-        #Project(23854, ITHS_REDCAP_API_URL, "en", "irb", {
-        #    'encounter_arm_1': 742155,
-        #}, 5000),
 
         # HCT 2021-2022 REDCap project
-        # A dedicated REDCap server was created for HCT becuase the load
+        # A dedicated REDCap server was created for HCT because the load
         # on the shared ITHS REDCap server was too heavy.
         Project(45, HCT_REDCAP_API_URL, "en", "irb", {
             'encounter_arm_1': 129,
         }, 5000),
 
-        # Childcare Study
-        Project(23740, ITHS_REDCAP_API_URL, "en", "irb", {
-            'enrollment_arm_1': 742420,
-            'week1_mon_test_arm_1': 742421,
-            'week1_thur_test_arm_1': 742422,
-            'week2_mon_test_arm_1': 742423,
-            'week2_thur_test_arm_1': 742424,
-            'week3_mon_test_arm_1': 742425,
-            'week3_thur_test_arm_1': 742426,
-            'week4_mon_test_arm_1': 742427,
-            'week4_thur_test_arm_1': 742428,
-            'week5_mon_test_arm_1': 742429,
-            'week5_thur_test_arm_1': 742430,
-            'week6_mon_test_arm_1': 742431,
-            'week6_thur_test_arm_1': 742432,
-            'week7_mon_test_arm_1': 742433,
-            'week7_thur_test_arm_1': 742434,
-            'week8_mon_test_arm_1': 742435,
-            'week8_thur_test_arm_1': 742436,
-            'unscheduled_arm_1': 747706,
-            'enrollment_arm_2': 742438,
-            'week_2_arm_2': 742439,
-        }),
-
         # Adult Family Home and Workplace Outbreaks Study
         Project(27619, ITHS_REDCAP_API_URL, "en", "clinical", None),
-
-        # Snohomish School District Testing
-        # English
-        Project(27574, ITHS_REDCAP_API_URL, "en", "irb", {
-            'enrollment_arm_1': 751314,
-            'week_1_arm_1': 757069,
-            'week_2_arm_1': 757072,
-            'week_3_arm_1': 757737,
-            'week_4_arm_1': 757739,
-            'week_5_arm_1': 757742,
-            'week_6_arm_1': 757745,
-            'week_7_arm_1': 757750,
-            'week_8_arm_1': 757752,
-            'week_9_arm_1': 757757,
-            'week_10_arm_1': 757762,
-            'week_11_arm_1': 757764,
-            'week_12_arm_1': 757765,
-            'week_13_arm_1': 757770,
-            'week_14_arm_1': 757772,
-            'week_15_arm_1': 757777,
-            'enrollment_arm_2': 751929,
-            'week_2_arm_2': 757064,
-        }),
-         # Russian
-        Project(32751, ITHS_REDCAP_API_URL, "ru", "irb", {
-           'enrollment_arm_1': 775811,
-            'week_1_arm_1': 775816,
-            'week_2_arm_1': 775821,
-            'week_3_arm_1': 775826,
-            'week_4_arm_1': 775831,
-            'week_5_arm_1': 775836,
-            'week_6_arm_1': 775841,
-            'week_7_arm_1': 775846,
-            'week_8_arm_1': 775851,
-            'week_9_arm_1': 775856,
-            'week_10_arm_1': 775861,
-            'week_11_arm_1': 775866,
-            'week_12_arm_1': 775871,
-            'week_13_arm_1': 775876,
-            'week_14_arm_1': 775881,
-            'week_15_arm_1': 775886,
-            'enrollment_arm_2': 775891,
-            'week_2_arm_2': 775896,
-        }),
-        # Spanish
-        Project(32756, ITHS_REDCAP_API_URL, "es", "irb", {
-           'enrollment_arm_1': 775901,
-            'week_1_arm_1': 775906,
-            'week_2_arm_1': 775911,
-            'week_3_arm_1': 775916,
-            'week_4_arm_1': 775921,
-            'week_5_arm_1': 775926,
-            'week_6_arm_1': 775931,
-            'week_7_arm_1': 775936,
-            'week_8_arm_1': 775941,
-            'week_9_arm_1': 775946,
-            'week_10_arm_1': 775951,
-            'week_11_arm_1': 775956,
-            'week_12_arm_1': 775961,
-            'week_13_arm_1': 775966,
-            'week_14_arm_1': 775971,
-            'week_15_arm_1': 775976,
-            'enrollment_arm_2': 775981,
-            'week_2_arm_2': 775986,
-        }),
-
-        # 2021 Childcare Study
-        Project(29351, ITHS_REDCAP_API_URL, "en", "irb", {
-            'enrollment_arm_1': 756831,
-            'week1_test_1_arm_1': 759847,
-            'week1_test_2_arm_1': 759852,
-            'week2_test_1_arm_1': 759857,
-            'week2_test_2_arm_1': 759862,
-            'week3_test_1_arm_1': 759867,
-            'week3_test_2_arm_1': 759872,
-            'week4_test_1_arm_1': 759877,
-            'week4_test_2_arm_1': 759882,
-            'week5_test_1_arm_1': 759887,
-            'week5_test_2_arm_1': 759892,
-            'week6_test_1_arm_1': 759897,
-            'week6_test_2_arm_1': 759902,
-            'week7_test_1_arm_1': 759907,
-            'week7_test_2_arm_1': 759912,
-            'week8_test_1_arm_1': 759917,
-            'week8_test_2_arm_1': 759922,
-            'week9_test_1_arm_1': 759927,
-            'week9_test_2_arm_1': 759932,
-            'week10_test_1_arm_1': 759937,
-            'week10_test_2_arm_1': 759942,
-            'week11_test_1_arm_1': 759947,
-            'week11_test_2_arm_1': 759952,
-            'week12_test_1_arm_1': 759957,
-            'week12_test_2_arm_1': 759962,
-            'week13_test_1_arm_1': 759967,
-            'week13_test_2_arm_1': 759972,
-            'week14_test_1_arm_1': 759977,
-            'week14_test_2_arm_1': 759982,
-            'week15_test_1_arm_1': 759987,
-            'week15_test_2_arm_1': 759992,
-            'week16_test_1_arm_1': 759997,
-            'week16_test_2_arm_1': 760002,
-            'week17_test_1_arm_1': 760007,
-            'week17_test_2_arm_1': 760012,
-            'unscheduled_arm_1': 756916,
-            'enrollment_arm_2': 756921,
-            'week_2_arm_2': 756926,
-        }),
-
-        # Apple Respiratory Study
-        Project(24499, ITHS_REDCAP_API_URL, "en", "irb", {
-            'enrollment_arm_1': 743460,
-            'baseline_test_arm_1': 769723,
-            'illness_episode_arm_1': 769724,
-            'illness_kit_replac_arm_1': 769728,
-            'serial_kit_fulfill_arm_1': 769733,
-            'serial_event_1_arm_1': 769737,
-            'serial_event_2_arm_1': 769742,
-            'serial_event_3_arm_1': 769743,
-            'serial_event_4_arm_1': 769744,
-        }),
     ]
 
 

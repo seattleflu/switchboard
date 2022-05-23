@@ -114,7 +114,7 @@ def main():
             'symptomatic_arm_2': 737706,
             'asymptomatic_arm_3': 737707,
             'group_enroll_arm_4': 737754
-        }),
+        }, 20000),
         Project(22472, ITHS_REDCAP_API_URL, "ru", "irb", {
             'priority_arm_1': 737728,
             'symptomatic_arm_2': 737729,

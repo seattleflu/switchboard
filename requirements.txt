@@ -143,7 +143,6 @@ charset-normalizer==2.0.12 \
     --hash=sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df
     # via
     #   aiohttp
-    #   httpx
     #   requests
 click==7.1.2 \
     --hash=sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a \
@@ -299,9 +298,9 @@ h11==0.12.0 \
     # via
     #   httpcore
     #   uvicorn
-httpcore==0.14.7 \
-    --hash=sha256:47d772f754359e56dd9d892d9593b6f9870a37aeb8ba51e9a88b09b3d68cfade \
-    --hash=sha256:7503ec1c0f559066e7e39bc4003fd2ce023d01cf51793e3c173b864eb456ead1
+httpcore==0.15.0 \
+    --hash=sha256:1105b8b73c025f23ff7c36468e4432226cbb959176eab66864b8e31c4ee27fa6 \
+    --hash=sha256:18b68ab86a3ccf3e7dc0f43598eaddcf472b602aba29f9aa6ab85fe2ada3980b
     # via httpx
 httplib2==0.20.4 \
     --hash=sha256:58a98e45b4b1a48273073f905d2961666ecf0fbac4250ea5b47aef259eb5c585 \
@@ -310,9 +309,9 @@ httplib2==0.20.4 \
     #   google-api-python-client
     #   google-auth-httplib2
     #   oauth2client
-httpx==0.22.0 \
-    --hash=sha256:d8e778f76d9bbd46af49e7f062467e3157a5a3d2ae4876a4bbfd8a51ed9c9cb4 \
-    --hash=sha256:e35e83d1d2b9b2a609ef367cc4c1e66fd80b750348b20cc9e19d1952fc2ca3f6
+httpx==0.23.0 \
+    --hash=sha256:42974f577483e1e932c3cdc3cd2303e883cbfba17fe228b0f63589764d7b9c4b \
+    --hash=sha256:f28eac771ec9eb4866d3fb4ab65abd42d38c424739e80c08d8d20570de60b0ef
     # via datasette
 hupper==1.10.3 \
     --hash=sha256:cd6f51b72c7587bc9bce8a65ecd025a1e95f1b03284519bfe91284d010316cd9 \
@@ -717,7 +716,6 @@ typing-extensions==4.1.1 \
     --hash=sha256:1a9462dcc3347a79b1f1c0271fbe79e844580bb598bafa1ed208b94da3cdcd42 \
     --hash=sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2
     # via
-    #   aioitertools
     #   id3c
     #   janus
 uritemplate==4.1.1 \

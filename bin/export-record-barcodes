@@ -158,9 +158,6 @@ def main():
         Project(45, HCT_REDCAP_API_URL, "en", "irb", {
             'encounter_arm_1': 129,
         }, 5000),
-
-        # Adult Family Home and Workplace Outbreaks Study
-        Project(27619, ITHS_REDCAP_API_URL, "en", "clinical", None),
     ]
 
 

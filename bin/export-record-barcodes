@@ -37,10 +37,6 @@ BARCODE_FIELDS = [
     "collect_barcode_kiosk",
     "barcode_swabsend",
 
-    # AFH and Workplaces
-    "core_collection_barcode",
-    "return_collection_barcode",
-
     # CLIA
     "clia_barcode_verify",
     "clia_id",

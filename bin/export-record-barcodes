@@ -154,6 +154,11 @@ def main():
         Project(45, HCT_REDCAP_API_URL, "en", "irb", {
             'encounter_arm_1': 129,
         }, 5000),
+
+        # HCT 2022-2023 REDCap project
+        Project(148, HCT_REDCAP_API_URL, "en", "irb", {
+            'encounter_arm_1': 745,
+        }, 5000),
     ]
 
 

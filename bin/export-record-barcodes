@@ -109,13 +109,6 @@ def main():
         # instruments has any barcode fields, so include only the Encounter
         # event_id.
 
-        # HCT 2021-2022 REDCap project
-        # A dedicated REDCap server was created for HCT because the load
-        # on the shared ITHS REDCap server was too heavy.
-        Project(45, HCT_REDCAP_API_URL, "en", "irb", {
-            'encounter_arm_1': 129,
-        }, 5000),
-
         # HCT 2022-2023 REDCap project
         Project(148, HCT_REDCAP_API_URL, "en", "irb", {
             'encounter_arm_1': 745,

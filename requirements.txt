@@ -179,6 +179,10 @@ deepdiff==5.7.0 \
     --hash=sha256:1ffb38c3b5d9174eb2df95850c93aee55ec00e19396925036a2e680f725079e0 \
     --hash=sha256:838766484e323dcd9dec6955926a893a83767dc3f3f94542773e6aa096efe5d4
     # via id3c
+et-xmlfile==1.1.0 \
+    --hash=sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c \
+    --hash=sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada
+    # via openpyxl
 fhir-resources==5.1.1 \
     --hash=sha256:1863c9d124551db3666d79cabbb39ee16205ad22f1008e0bfc50b9a481639bb6 \
     --hash=sha256:8db64438325f238ae3abf43793ee10339e7107724b392441bdae3d963d82d0d5
@@ -317,8 +321,8 @@ hupper==1.10.3 \
     --hash=sha256:cd6f51b72c7587bc9bce8a65ecd025a1e95f1b03284519bfe91284d010316cd9 \
     --hash=sha256:f683850d62598c02faf3c7cdaaa727d8cbe3c5a2497a5737a8358386903b2601
     # via datasette
-id3c @ https://github.com/seattleflu/id3c/archive/e979f860b237b73855155c2d2764e4aa54aa44d6.tar.gz \
-    --hash=sha256:a53342a2677291d152f0c6a76113a3061aabcab0a105990abf8025fafdf09db0
+id3c @ https://github.com/seattleflu/id3c/archive/bf3a60e0b5eedb55e19924901caa6f21be2230ab.tar.gz \
+    --hash=sha256:04b812c3e9acd15c8eef46051ec40097c70019cbeaea13f5364f14c391aa7e9b
     # via -r requirements.in
 idna==3.3 \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
@@ -498,6 +502,10 @@ numpy==1.22.3 \
     # via pandas
 oauth2client==3.0.0 \
     --hash=sha256:5b5b056ec6f2304e7920b632885bd157fa71d1a7f3ddd00a43b1541a8d1a2460
+    # via id3c
+openpyxl==3.0.10 \
+    --hash=sha256:0ab6d25d01799f97a9464630abacbb34aafecdcaa0ef3cba6d6b3499867d0355 \
+    --hash=sha256:e47805627aebcf860edb4edf7987b1309c1b3632f3750538ed962bbcc3bd7449
     # via id3c
 ordered-set==4.0.2 \
     --hash=sha256:ba93b2df055bca202116ec44b9bead3df33ea63a7d5827ff8e16738b97f33a95
@@ -712,10 +720,15 @@ sniffio==1.2.0 \
     #   anyio
     #   httpcore
     #   httpx
+types-python-dateutil==2.8.19 \
+    --hash=sha256:6284df1e4783d8fc6e587f0317a81333856b872a6669a282f8a325342bce7fa8 \
+    --hash=sha256:bfd3eb39c7253aea4ba23b10f69b017d30b013662bb4be4ab48b20bbd763f309
+    # via id3c
 typing-extensions==4.1.1 \
     --hash=sha256:1a9462dcc3347a79b1f1c0271fbe79e844580bb598bafa1ed208b94da3cdcd42 \
     --hash=sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2
     # via
+    #   aioitertools
     #   id3c
     #   janus
 uritemplate==4.1.1 \

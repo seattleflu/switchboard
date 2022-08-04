@@ -25,7 +25,6 @@ log = logging.getLogger(__name__)
 log.setLevel(LOG_LEVEL)
 
 
-ITHS_REDCAP_API_URL = "https://redcap.iths.org/api/"
 HCT_REDCAP_API_URL = "https://hct.redcap.rit.uw.edu/api/"
 
 BARCODE_FIELDS = [
@@ -104,56 +103,11 @@ def main():
     # With the addition of all of these event maps, it'd be even nicer to
     # extract out this data into a separate NDJSON/YAML file.
     projects = [
-        # SCAN (research study)
-        Project(22461, ITHS_REDCAP_API_URL, "en", "irb", {
-            'priority_arm_1': 737705,
-            'symptomatic_arm_2': 737706,
-            'asymptomatic_arm_3': 737707,
-            'group_enroll_arm_4': 737754
-        }, 20000),
-        Project(22472, ITHS_REDCAP_API_URL, "ru", "irb", {
-            'priority_arm_1': 737728,
-            'symptomatic_arm_2': 737729,
-            'asymptomatic_arm_3': 737730,
-            'group_enroll_arm_4': 737760,
-        }),
-        Project(22474, ITHS_REDCAP_API_URL, "zh-Hant", "irb", {
-            'priority_arm_1': 737734,
-            'symptomatic_arm_2': 737735,
-            'asymptomatic_arm_3': 737736,
-            'group_enroll_arm_4': 737762,
-        }),
-        Project(22475, ITHS_REDCAP_API_URL, "es", "irb", {
-            'priority_arm_1': 737737,
-            'symptomatic_arm_2': 737738,
-            'asymptomatic_arm_3': 737739,
-            'group_enroll_arm_4': 737763,
-        }),
-        Project(22477, ITHS_REDCAP_API_URL, "vi", "irb", {
-            'priority_arm_1': 737743,
-            'symptomatic_arm_2': 737744,
-            'asymptomatic_arm_3': 737745,
-            'group_enroll_arm_4': 737765,
-        }),
-        Project(23089, ITHS_REDCAP_API_URL, "en", "irb-kiosk", {
-            'priority_arm_1': 739632,
-            'symptomatic_arm_2': 739633,
-            'asymptomatic_arm_3': 739634,
-            'group_enroll_arm_4': 739635,
-        }),
-
         # UW Reopening Testing (HCT)
         # There are currently two events for this project: Enrollment and
         # Encounter events, both part of arm 1. None of the Enrollment event
         # instruments has any barcode fields, so include only the Encounter
         # event_id.
-
-        # HCT 2021-2022 REDCap project
-        # A dedicated REDCap server was created for HCT because the load
-        # on the shared ITHS REDCap server was too heavy.
-        Project(45, HCT_REDCAP_API_URL, "en", "irb", {
-            'encounter_arm_1': 129,
-        }, 5000),
 
         # HCT 2022-2023 REDCap project
         Project(148, HCT_REDCAP_API_URL, "en", "irb", {

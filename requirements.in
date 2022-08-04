@@ -1,3 +1,3 @@
-id3c @ https://github.com/seattleflu/id3c/archive/e979f860b237b73855155c2d2764e4aa54aa44d6.tar.gz
+id3c @ https://github.com/seattleflu/id3c/archive/bf3a60e0b5eedb55e19924901caa6f21be2230ab.tar.gz
 datasette >=0.55
 urllib3 > 1.26.5

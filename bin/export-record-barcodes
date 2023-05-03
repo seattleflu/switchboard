@@ -29,28 +29,16 @@ HCT_REDCAP_API_URL = "https://hct.redcap.rit.uw.edu/api/"
 
 BARCODE_FIELDS = [
     "pre_scan_barcode",
-    "utm_tube_barcode",
-    "utm_tube_barcode_2",
-    "reenter_barcode",
     "return_utm_barcode",
-    "collect_barcode_kiosk",
     "barcode_swabsend",
 
     # CLIA
-    "clia_barcode_verify",
-    "clia_id",
-    "core_clia_barcode",
-    "return_clia_barcode",
     "scan_id",
-    "scan_id_kiosk",
-    "scan_id_manual",
 ]
 
 REDCAP_FIELDS = [
     "record_id",
-    "redcap_event_name",
     "back_end_scan_date",  # used for record disambiguation
-    "redcap_repeat_instance",
     "post_collection_data_entry_qc_complete",  # used to see if we can deep link to the PCDEQC form
     *BARCODE_FIELDS,
 ]

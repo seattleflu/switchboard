@@ -1,3 +1,6 @@
+NOTE: Archived on 11-27-2023. No longer in use.
+
+
 Exploring the idea of a REDCap record switchboard for the SFS kit unboxing
 team.
 
